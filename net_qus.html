@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 2: Network Standards - Practice Exam Lab</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #0f172a;
+            --text-muted: #64748b;
+            --correct-bg: #dcfce7;
+            --correct-border: #22c55e;
+            --correct-text: #14532d;
+            --incorrect-bg: #fee2e2;
+            --incorrect-border: #ef4444;
+            --incorrect-text: #7f1d1d;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard {
+            max-width: 900px;
+            margin: 1.5rem auto;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .score-box {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .score-box span {
+            color: var(--primary-color);
+        }
+
+        .progress-bar-container {
+            flex-grow: 1;
+            min-width: 200px;
+            height: 12px;
+            background-color: var(--border-color);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+
+        .reset-btn {
+            background-color: #dc2626;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .reset-btn:hover {
+            background-color: #b91c1c;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .question-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: #eff6ff;
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--text-color);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+        }
+
+        .option-btn {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.85rem 1rem;
+            text-align: left;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            color: var(--text-color);
+        }
+
+        .option-btn:hover:not(:disabled) {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-letter {
+            font-weight: 700;
+            background: #e2e8f0;
+            color: var(--text-color);
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 0.85rem;
+        }
+
+        .option-btn:disabled {
+            cursor: default;
+        }
+
+        .option-btn.correct {
+            background-color: var(--correct-bg);
+            border-color: var(--correct-border);
+            color: var(--correct-text);
+        }
+
+        .option-btn.correct .option-letter {
+            background-color: var(--correct-border);
+            color: white;
+        }
+
+        .option-btn.incorrect {
+            background-color: var(--incorrect-bg);
+            border-color: var(--incorrect-border);
+            color: var(--incorrect-text);
+        }
+
+        .option-btn.incorrect .option-letter {
+            background-color: var(--incorrect-border);
+            color: white;
+        }
+
+        .explanation-box {
+            margin-top: 1.2rem;
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .explanation-box.show-correct {
+            display: block;
+            background-color: #f0fdf4;
+            border-left: 4px solid var(--correct-border);
+            color: #166534;
+        }
+
+        .explanation-box.show-incorrect {
+            display: block;
+            background-color: #fef2f2;
+            border-left: 4px solid var(--incorrect-border);
+            color: #991b1b;
+        }
+
+        .explanation-title {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            header h1 { font-size: 1.4rem; }
+            .dashboard { flex-direction: column; align-items: stretch; }
+            .score-box { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Chapter 2: Network Standards Practice Lab</h1>
+        <p>70 University Exam-Level Multiple Choice Questions</p>
+    </header>
+
+    <div class="dashboard">
+        <div class="score-box">
+            Score: <span id="score">0</span> / <span id="total-answered">0</span> (<span id="percentage">0%</span>)
+        </div>
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <button class="reset-btn" onclick="resetExam()">Reset Exam</button>
+    </div>
+
+    <div class="container" id="quiz-container">
+        <!-- Questions will be injected here dynamically -->
+    </div>
+
+    <script>
+        const questions = [
+            // Topic 1: Network Standards Basics (Q1 - Q10)
+            {
+                id: 1,
+                question: "What is the primary definition of network standards (also known as protocols)?",
+                options: [
+                    "Hardware specifications for constructing fiber-optic cables",
+                    "Rigid rules governing the exchange of messages between hardware/software processes on different host computers",
+                    "A set of informal guidelines for software developers writing web applications",
+                    "Operating system algorithms for managing local processor threads"
+                ],
+                correct: 1,
+                explanation: "Network standards (protocols) are rigid rules governing message exchange between hardware or software processes across different hosts. Because computers lack human intelligence, these rules must be strict."
+            },
+            {
+                id: 2,
+                question: "Why must network standards and protocols be extremely rigid?",
+                options: [
+                    "Because network bandwidth is inherently unlimited",
+                    "Because computers are not intelligent and cannot interpret ambiguous rules",
+                    "To allow human operators to manually configure every packet",
+                    "To prevent hardware components from overheating during transmission"
+                ],
+                correct: 1,
+                explanation: "Computers are not intelligent, so standards must be very rigid so systems can automatically process incoming messages without ambiguity."
+            },
+            {
+                id: 3,
+                question: "Which three core elements are governed by message standards?",
+                options: [
+                    "Voltage, Current, and Resistance",
+                    "Syntax, Semantics, and Message Order",
+                    "Compression, Encryption, and Archiving",
+                    "Routing, Switching, and Bridging"
+                ],
+                correct: 1,
+                explanation: "Message standards govern three primary aspects: Message Syntax (structure), Message Semantics (meaning), and Message Order (interaction timing)."
+            },
+            {
+                id: 4,
+                question: "How is 'Message Syntax' best defined in network communications?",
+                options: [
+                    "The operational meaning behind a request or response field",
+                    "The structural organization of a message into fields like headers, data fields, and trailers",
+                    "The sequence in which two host computers take turns speaking",
+                    "The speed at which bits are transmitted over a physical medium"
+                ],
+                correct: 1,
+                explanation: "Message syntax refers to how a message is organized, structured, or formatted—analogous to human grammar, but far more rigid."
+            },
+            {
+                id: 5,
+                question: "An HTTP request message states: 'Please give me this file.' This statement is an example of message:",
+                options: [
+                    "Syntax",
+                    "Order",
+                    "Semantics",
+                    "Fragmentation"
+                ],
+                correct: 2,
+                explanation: "Message semantics refers to the meaning of a message. An HTTP request's semantics is asking the server to deliver a specific file."
+            },
+            {
+                id: 6,
+                question: "Which of the following is governed by 'Message Order'?",
+                options: [
+                    "The length of the destination MAC address field",
+                    "Turn-taking, initiating communication, and the sequence of messages in complex transactions",
+                    "The calculation of the Frame Check Sequence (FCS)",
+                    "The conversion of binary bits into electrical voltage pulses"
+                ],
+                correct: 1,
+                explanation: "Message order dictates turn-taking, which host must initiate communication, and how multi-step transactions progress sequentially."
+            },
+            {
+                id: 7,
+                question: "What are the three potential primary parts of a general network message?",
+                options: [
+                    "Preamble, Body, and Postscript",
+                    "Header, Data Field, and Trailer",
+                    "Address, Payload, and Checksum",
+                    "Source, Destination, and Route"
+                ],
+                correct: 1,
+                explanation: "General message syntax divides messages into a Header (everything before data), a Data Field (content delivered), and a Trailer (everything after data)."
+            },
+            {
+                id: 8,
+                question: "By definition, what is a message 'Header'?",
+                options: [
+                    "Everything inside the data field",
+                    "Everything that comes after the data field",
+                    "Everything that comes before the data field",
+                    "The physical connection between host interfaces"
+                ],
+                correct: 2,
+                explanation: "The header consists of everything that precedes the data field in a network message."
+            },
+            {
+                id: 9,
+                question: "Which message part is used by switches and routers to direct messages across a network?",
+                options: [
+                    "The user payload inside the data field",
+                    "The destination address field located in the header",
+                    "The trailer padding bits",
+                    "The LLC subheader extension"
+                ],
+                correct: 1,
+                explanation: "Switches and routers inspect the destination address field inside the message header (like an address on an envelope) to forward data."
+            },
+            {
+                id: 10,
+                question: "TCP supervisory messages (like pure ACKs or SYN packets) are unique because they consist of:",
+                options: [
+                    "Only a data field with no header",
+                    "Only a trailer and a preamble",
+                    "Only a header with no data field content",
+                    "Only physical layer preamble bits"
+                ],
+                correct: 2,
+                explanation: "Pure TCP supervisory messages carry no application content; they are 'pure headers' containing control flags and sequence/ACK numbers."
+            },
+
+            // Topic 2: Reliability & Connection Orientation (Q11 - Q20)
+            {
+                id: 11,
+                question: "To be classified as a 'Reliable Protocol', a protocol MUST perform:",
+                options: [
+                    "Error detection only",
+                    "Both error detection AND error correction (retransmission)",
+                    "Data encryption and compression",
+                    "Hop-by-hop switching across all routers"
+                ],
+                correct: 1,
+                explanation: "Reliability requires BOTH error detection AND error correction. Protocols that drop damaged messages without retransmitting them are unreliable."
+            },
+            {
+                id: 12,
+                question: "Why is HTTP considered an 'unreliable protocol'?",
+                options: [
+                    "It cannot detect bit errors in the header",
+                    "If an HTTP message is lost or damaged, HTTP itself does not perform retransmission",
+                    "It operates exclusively at the physical layer",
+                    "It requires a formal 3-way handshake prior to sending data"
+                ],
+                correct: 1,
+                explanation: "HTTP is unreliable because it lacks error correction mechanisms. If an HTTP message is lost, HTTP relies on TCP underneath to fix it."
+            },
+            {
+                id: 13,
+                question: "How does the Transmission Control Protocol (TCP) achieve reliability?",
+                options: [
+                    "By discarding corrupt frames at switches",
+                    "By requiring the receiver to acknowledge correct segments and having the sender retransmit unacknowledged segments",
+                    "By forcing routers to store all packets indefinitely",
+                    "By limiting transmission speeds to 10 Mbps"
+                ],
+                correct: 1,
+                explanation: "TCP uses Acknowledgments (ACKs). If a sender does not receive an ACK for a segment within a timeout period, it retransmits that segment."
+            },
+            {
+                id: 14,
+                question: "What defines a 'Connection-Oriented Protocol'?",
+                options: [
+                    "It sends messages immediately without prior agreement between hosts",
+                    "It has formal connection-opening and connection-closing procedures",
+                    "It relies exclusively on wireless radio communication",
+                    "It avoids using sequence numbers in message headers"
+                ],
+                correct: 1,
+                explanation: "Connection-oriented protocols have formal openings and closings (like telephone calls) to establish and terminate communication state."
+            },
+            {
+                id: 15,
+                question: "Which protocol type gives every message a unique sequence number?",
+                options: [
+                    "Connectionless protocols",
+                    "Connection-oriented protocols",
+                    "Physical layer specifications",
+                    "Unreliable datagram protocols"
+                ],
+                correct: 1,
+                explanation: "Connection-oriented protocols assign sequence numbers to messages to order them, detect missing gaps, and handle reassembly."
+            },
+            {
+                id: 16,
+                question: "Sequence numbers in connection-oriented protocols allow receiver hosts to:",
+                options: [
+                    "Bypass physical layer cabling requirements",
+                    "Detect lost messages (gaps) and reassemble fragmented application messages",
+                    "Determine the MAC address of intermediate switches",
+                    "Encrypt HTTP headers automatically"
+                ],
+                correct: 1,
+                explanation: "Sequence numbers allow receiving hosts to detect missing messages (gaps in sequence) and reassemble fragments in proper order."
+            },
+            {
+                id: 17,
+                question: "What is a major disadvantage of connection-oriented protocols like TCP?",
+                options: [
+                    "They cannot perform error detection",
+                    "They place a heavy load and high overhead on networks and hosts",
+                    "They are limited to single switched local networks",
+                    "They cannot carry application layer messages"
+                ],
+                correct: 1,
+                explanation: "Connection-oriented protocols require extra processing cycles and supervisory traffic (e.g., ~7 messages to open/close), creating high overhead."
+            },
+            {
+                id: 18,
+                question: "Roughly how many total supervisory messages are required to open and close a formal TCP connection?",
+                options: [
+                    "2 messages",
+                    "7 messages",
+                    "15 messages",
+                    "100 messages"
+                ],
+                correct: 1,
+                explanation: "Opening (3-way handshake) and closing (4-way teardown) a TCP connection consumes about 7 control messages total."
+            },
+            {
+                id: 19,
+                question: "HTTP is connectionless. This means HTTP:",
+                options: [
+                    "Establishes a formal handshake before requesting a web page",
+                    "Simply sends request messages without prior connection openings or closing messages",
+                    "Guarantees that every packet arrives without error",
+                    "Uses 48-bit MAC addresses to route packets across the Internet"
+                ],
+                correct: 1,
+                explanation: "Connectionless protocols (like HTTP, IP, UDP, and Ethernet) transmit messages immediately without establishing or closing connections."
+            },
+            {
+                id: 20,
+                question: "What process breaks long application messages into smaller pieces to fit inside network packets?",
+                options: [
+                    "Encapsulation",
+                    "Fragmentation",
+                    "Multiplexing",
+                    "Decapsulation"
+                ],
+                correct: 1,
+                explanation: "Fragmentation divides large application messages into smaller fragments small enough to fit inside individual packets."
+            },
+
+            // Topic 3: Hybrid TCP/IP-OSI Architecture (Q21 - Q32)
+            {
+                id: 21,
+                question: "What is a 'Standards Architecture'?",
+                options: [
+                    "A single monolithic protocol that handles all network tasks",
+                    "A broad plan that breaks the networking problem into smaller, modular layers for ease of development",
+                    "A hardware blueprint for manufacturing switches",
+                    "A legal agreement between internet service providers"
+                ],
+                correct: 1,
+                explanation: "A standards architecture is a broad modular plan dividing complex networking functionality into independent layers assigned to specialists."
+            },
+            {
+                id: 22,
+                question: "What is the dominant standards architecture used in networking today?",
+                options: [
+                    "Pure 7-Layer OSI Model",
+                    "Pure 4-Layer TCP/IP Model",
+                    "Hybrid TCP/IP-OSI Standards Architecture",
+                    "AppleTalk Architecture"
+                ],
+                correct: 2,
+                explanation: "Modern networking relies on the 5-Layer Hybrid TCP/IP-OSI architecture, blending TCP/IP standards at upper layers with OSI at lower layers."
+            },
+            {
+                id: 23,
+                question: "What is the correct order of layers in the 5-Layer Hybrid TCP/IP-OSI model, from Layer 5 down to Layer 1?",
+                options: [
+                    "Application, Internet, Transport, Data Link, Physical",
+                    "Application, Transport, Internet, Data Link, Physical",
+                    "Physical, Data Link, Internet, Transport, Application",
+                    "Session, Presentation, Application, Transport, Network"
+                ],
+                correct: 1,
+                explanation: "The 5 layers are Layer 5 (Application), Layer 4 (Transport), Layer 3 (Internet), Layer 2 (Data Link), and Layer 1 (Physical)."
+            },
+            {
+                id: 24,
+                question: "Which standards organization created the OSI (Open Systems Interconnection) architecture?",
+                options: [
+                    "IETF (Internet Engineering Task Force)",
+                    "ISO (International Organization for Standardization) & ITU-T",
+                    "IEEE (Institute of Electrical and Electronics Engineers)",
+                    "W3C (World Wide Web Consortium)"
+                ],
+                correct: 1,
+                explanation: "The OSI architecture was created by ISO and ITU-T, whereas TCP/IP was created by the IETF."
+            },
+            {
+                id: 25,
+                question: "Which standards organization creates TCP/IP internetworking standards?",
+                options: [
+                    "IETF (Internet Engineering Task Force)",
+                    "ISO",
+                    "IEEE",
+                    "ANSI"
+                ],
+                correct: 0,
+                explanation: "The IETF (Internet Engineering Task Force) sets standards for the TCP/IP architecture (Internet and Transport layers)."
+            },
+            {
+                id: 26,
+                question: "In the Hybrid TCP/IP-OSI architecture, which layers draw their standards from OSI?",
+                options: [
+                    "Layers 4 and 5",
+                    "Layers 3 and 4",
+                    "Layers 1 and 2 (Physical and Data Link)",
+                    "Layers 2 and 3"
+                ],
+                correct: 2,
+                explanation: "The Hybrid model uses OSI standards at Layer 1 (Physical) and Layer 2 (Data Link) for single-network communications (e.g., Ethernet, Wi-Fi)."
+            },
+            {
+                id: 27,
+                question: "In the Hybrid TCP/IP-OSI architecture, which layers draw their standards from TCP/IP?",
+                options: [
+                    "Layers 1 and 2",
+                    "Layers 3 and 4 (Internet and Transport)",
+                    "Layers 5 and 6",
+                    "Layers 2 and 3"
+                ],
+                correct: 1,
+                explanation: "The Hybrid model uses TCP/IP standards at Layer 3 (Internet) and Layer 4 (Transport) for cross-network internetworking."
+            },
+            {
+                id: 28,
+                question: "What is the primary purpose of Layer 5 (Application Layer)?",
+                options: [
+                    "Frame delivery across a single switched LAN",
+                    "Application-to-application communication and interoperability",
+                    "End-to-end packet error recovery",
+                    "Electrical bit representation on physical media"
+                ],
+                correct: 1,
+                explanation: "Layer 5 governs application-to-application communication, allowing software programs from different vendors to work together."
+            },
+            {
+                id: 29,
+                question: "What is the specific purpose of Layer 4 (Transport Layer)?",
+                options: [
+                    "Host-to-host communication and end-to-end error recovery/flow control",
+                    "Routing packets across multiple routers",
+                    "Switching frames between adjacent LAN switches",
+                    "Defining mechanical cable pinout standards"
+                ],
+                correct: 0,
+                explanation: "Layer 4 handles end-to-end host-to-host communication capabilities, including error recovery, retransmissions, and flow control."
+            },
+            {
+                id: 30,
+                question: "What is the core function of Layer 3 (Internet Layer)?",
+                options: [
+                    "Transmitting frames across a single wireless access point",
+                    "Carrying packets across an internet made of multiple networks via routers",
+                    "Formatting user text into HTML",
+                    "Connecting hardware interface ports with copper wire"
+                ],
+                correct: 1,
+                explanation: "Layer 3 governs packet transmission across an internet (routed networks connected by routers)."
+            },
+            {
+                id: 31,
+                question: "What is the core function of Layer 2 (Data Link Layer)?",
+                options: [
+                    "Routing packets across international internetworks",
+                    "Transmitting frames across a single switched or wireless network",
+                    "Managing end-to-end application sessions",
+                    "Generating light signals in fiber optic strands"
+                ],
+                correct: 1,
+                explanation: "Layer 2 governs frame delivery across a single switched/wireless LAN or WAN."
+            },
+            {
+                id: 32,
+                question: "What does Layer 1 (Physical Layer) govern?",
+                options: [
+                    "End-to-end reliable transmission",
+                    "Transmission of raw bits over a physical medium (cables, connectors, radio waves)",
+                    "Data packet formatting and logical IP addressing",
+                    "Web browser cookie processing"
+                ],
+                correct: 1,
+                explanation: "Layer 1 provides mechanical and electrical specifications to transmit digital data bits over physical media."
+            },
+
+            // Topic 4: Links, Routes, and Data Links (Q33 - Q42)
+            {
+                id: 33,
+                question: "What is a 'Physical Link'?",
+                options: [
+                    "The entire path a packet takes across the Internet",
+                    "A connection between two directly adjacent devices (e.g., Host to Switch)",
+                    "The path a frame takes through an entire switched network",
+                    "A virtual circuit established by TCP"
+                ],
+                correct: 1,
+                explanation: "A physical link is the direct connection between two adjacent devices (e.g., host-to-switch, switch-to-switch, switch-to-router)."
+            },
+            {
+                id: 34,
+                question: "What is a 'Data Link'?",
+                options: [
+                    "The path a frame takes through a single switched or wireless network",
+                    "The physical copper wire connecting a PC to a wall jack",
+                    "The path a packet takes through multiple routed networks",
+                    "An encrypted tunnel between two application processes"
+                ],
+                correct: 0,
+                explanation: "A data link is the path a frame takes through a single switched or wireless network from host to router or host to host."
+            },
+            {
+                id: 35,
+                question: "What is a 'Route'?",
+                options: [
+                    "The connection between a switch and a router",
+                    "The path a packet takes all the way through an internetwork from source host to destination host",
+                    "The transmission of bits across a fiber cable",
+                    "A single frame path inside a switched LAN"
+                ],
+                correct: 1,
+                explanation: "A route is the path a packet takes all the way through the internet across multiple networks and routers."
+            },
+            {
+                id: 36,
+                question: "A packet travels from Host A to Host B through 3 switched networks connected by 2 routers. How many ROUTES exist?",
+                options: [
+                    "3 routes",
+                    "2 routes",
+                    "1 route",
+                    "6 routes"
+                ],
+                correct: 2,
+                explanation: "There is always exactly ONE route for a packet's entire journey across an internet, regardless of how many intermediate networks exist."
+            },
+            {
+                id: 37,
+                question: "A packet travels from Host A to Host B through 3 switched networks connected by 2 routers. How many DATA LINKS are involved?",
+                options: [
+                    "1 data link",
+                    "3 data links",
+                    "2 data links",
+                    "8 data links"
+                ],
+                correct: 1,
+                explanation: "There is one data link per network crossed. Passing through 3 switched networks requires 3 separate data links."
+            },
+            {
+                id: 38,
+                question: "In a routed network, frames change at:",
+                options: [
+                    "Switches, but NOT routers",
+                    "Routers, but NOT switches",
+                    "Every physical hub and cable splice",
+                    "The destination application process only"
+                ],
+                correct: 1,
+                explanation: "Frames change between routers (when moving from one network to another). Switches forward frames within a single network without changing them."
+            },
+            {
+                id: 39,
+                question: "When Host A sends a frame in Network X toward Router R1 destined for Host B in Network Z, what are the destination addresses?",
+                options: [
+                    "Packet Destination: Host B; Frame Destination: Router R1",
+                    "Packet Destination: Router R1; Frame Destination: Host B",
+                    "Packet Destination: Host A; Frame Destination: Switch X1",
+                    "Packet Destination: Host B; Frame Destination: Host B"
+                ],
+                correct: 0,
+                explanation: "The Packet destination address remains the ultimate destination host (Host B). The Frame destination address specifies the next hop router (Router R1)."
+            },
+            {
+                id: 40,
+                question: "Why does the packet destination address remain constant while frame destination addresses change across routers?",
+                options: [
+                    "The packet address specifies ultimate end-to-end destination; frame addresses specify next-hop local devices",
+                    "Routers erase IP addresses to preserve bandwidth",
+                    "Frame addresses are encrypted by layer 3",
+                    "Switches require IP addresses to forward traffic"
+                ],
+                correct: 0,
+                explanation: "The IP packet specifies the final destination host across the entire internetwork, while frame MAC addresses change at each router hop to reach local devices."
+            },
+            {
+                id: 41,
+                question: "According to the slides, an 'internet' (with a lowercase 'i') is defined as:",
+                options: [
+                    "The global public Internet",
+                    "A group of switched or wireless networks connected by routers",
+                    "A single Ethernet LAN using switches",
+                    "A set of web servers running HTTP"
+                ],
+                correct: 1,
+                explanation: "An 'internet' (lowercase i) is any collection of switched/wireless networks connected by routers so hosts on any network can communicate."
+            },
+            {
+                id: 42,
+                question: "Which layers govern single networks versus internetworks?",
+                options: [
+                    "Single Networks: L3/L4; Internetworks: L1/L2",
+                    "Single Networks: L1/L2 (Physical/Data Link); Internetworks: L3/L4 (Internet/Transport)",
+                    "Single Networks: L5; Internetworks: L1",
+                    "Single Networks: L4; Internetworks: L2"
+                ],
+                correct: 1,
+                explanation: "Single networks are governed by Physical (L1) and Data Link (L2) layers. Internetworks are governed by Internet (L3) and Transport (L4) layers."
+            },
+
+            // Topic 5: Ethernet Frame Syntax (Q43 - Q52)
+            {
+                id: 43,
+                question: "In computer science and networking, what is an 'Octet'?",
+                options: [
+                    "A group of 4 bits",
+                    "A group of 8 bits (called a byte)",
+                    "A 16-bit address block",
+                    "A 48-bit MAC address"
+                ],
+                correct: 1,
+                explanation: "An octet is a group of 8 bits, which is called a byte in computer science."
+            },
+            {
+                id: 44,
+                question: "What is the exact field length of an Ethernet MAC address?",
+                options: [
+                    "32 bits (4 octets)",
+                    "48 bits (6 octets)",
+                    "128 bits (16 octets)",
+                    "16 bits (2 octets)"
+                ],
+                correct: 1,
+                explanation: "Ethernet addresses (MAC addresses) are 48 bits (6 octets) long."
+            },
+            {
+                id: 45,
+                question: "What is the purpose of the Preamble (7 octets) and Start Frame Delimiter / SFD (1 octet) in an Ethernet frame?",
+                options: [
+                    "To store source IP addresses",
+                    "To synchronize receiver bits and alert the NIC that actual frame data is following",
+                    "To carry user payload data",
+                    "To perform error retransmission"
+                ],
+                correct: 1,
+                explanation: "The Preamble synchronizes the receiver's clock, and the SFD signals that the actual frame information is starting."
+            },
+            {
+                id: 46,
+                question: "What is the exact bit pattern of the Ethernet Start Frame Delimiter (SFD)?",
+                options: [
+                    "01010101",
+                    "10101011",
+                    "11111111",
+                    "00000000"
+                ],
+                correct: 1,
+                explanation: "The SFD consists of the specific bit pattern '10101011'."
+            },
+            {
+                id: 47,
+                question: "What is the allowed size range for user data in the Data Field of an Ethernet frame?",
+                options: [
+                    "1 to 100 bytes",
+                    "46 to 1,500 bytes (octets)",
+                    "64 to 1,518 bytes",
+                    "128 to 512 bytes"
+                ],
+                correct: 1,
+                explanation: "The Ethernet data field must contain between 46 and 1,500 bytes of payload."
+            },
+            {
+                id: 48,
+                question: "If user data is less than 46 bytes, what does the Ethernet controller do?",
+                options: [
+                    "It drops the frame immediately",
+                    "It adds padding (PAD) bytes independently until data + pad equals 46 bytes",
+                    "It delays transmission until more data arrives",
+                    "It converts the frame into a TCP segment"
+                ],
+                correct: 1,
+                explanation: "If user data is under 46 bytes, the controller adds PAD bytes to bring the total data field size up to the required 46-byte minimum."
+            },
+            {
+                id: 49,
+                question: "What is the total minimum and maximum length of an overall Ethernet frame?",
+                options: [
+                    "46 to 1,500 octets",
+                    "64 to 1,518 octets",
+                    "32 to 1,024 octets",
+                    "128 to 2,048 octets"
+                ],
+                correct: 1,
+                explanation: "Including headers and trailers, an Ethernet frame ranges from 64 octets (minimum) to 1,518 octets (maximum)."
+            },
+            {
+                id: 50,
+                question: "What is the function of the Frame Check Sequence (FCS) field in an Ethernet frame?",
+                options: [
+                    "To retransmit damaged frames",
+                    "To detect errors using a Cyclic Redundancy Check (CRC) calculation",
+                    "To specify the destination IP address",
+                    "To open a formal TCP connection"
+                ],
+                correct: 1,
+                explanation: "The FCS is a 4-octet field containing a mathematical CRC check value used by the receiver to detect bit errors."
+            },
+            {
+                id: 51,
+                question: "When a receiving host calculates an FCS value that DOES NOT match the transmitted FCS value in an Ethernet frame, the receiver:",
+                options: [
+                    "Requests immediate retransmission",
+                    "Drops (ignores) the frame completely",
+                    "Corrects the damaged bits automatically",
+                    "Forwards the corrupted frame to the application"
+                ],
+                correct: 1,
+                explanation: "Ethernet performs error detection but NOT error correction. If the FCS check fails, the receiver simply drops the frame."
+            },
+            {
+                id: 52,
+                question: "Is Ethernet a reliable or unreliable protocol, and why?",
+                options: [
+                    "Reliable, because it calculates FCS",
+                    "Unreliable, because it drops erroneous frames without retransmitting them",
+                    "Reliable, because it uses 48-bit MAC addresses",
+                    "Unreliable, because it operates at layer 5"
+                ],
+                correct: 1,
+                explanation: "Ethernet is unreliable. It detects errors via FCS and drops bad frames, but it never retransmits them."
+            },
+
+            // Topic 6: Transport Layer Reliability Options (TCP vs UDP) (Q53 - Q60)
+            {
+                id: 53,
+                question: "Why is error correction NOT performed on a hop-by-hop basis by intermediate switches and routers?",
+                options: [
+                    "Because switches and routers cannot read digital bits",
+                    "Because errors are rare on modern links, making hop-by-hop correction unnecessary and prohibitively expensive",
+                    "Because routers do not possess processing chips",
+                    "Because layer 3 protocols forbid error detection"
+                ],
+                correct: 1,
+                explanation: "Transmission errors on modern hops are rare. Doing error correction on every switch and router would drastically increase device costs unnecessarily."
+            },
+            {
+                id: 54,
+                question: "Why does performing error correction at the Transport Layer make economic sense?",
+                options: [
+                    "Because transport processes exist only on source and destination hosts, so correction happens only once end-to-end",
+                    "Because layer 4 hardware is cheaper than cables",
+                    "Because routers perform transport layer processing automatically",
+                    "Because layer 5 protocols perform error recovery faster"
+                ],
+                correct: 0,
+                explanation: "Transport layer processes run only on the two endpoint hosts (source and destination). Doing correction once end-to-end keeps overall cost low."
+            },
+            {
+                id: 55,
+                question: "Why can't Voice over IP (VoIP) applications use TCP at the transport layer?",
+                options: [
+                    "VoIP messages do not contain IP addresses",
+                    "VoIP cannot wait for retransmissions of lost or damaged packets due to real-time latency limits",
+                    "TCP does not support voice audio files",
+                    "VoIP runs exclusively at Layer 1"
+                ],
+                correct: 1,
+                explanation: "VoIP requires real-time delivery. Waiting for TCP to detect and retransmit lost packets causes unacceptable delays and stuttering."
+            },
+
+            {
+                id: 56,
+                question: "Which protocol is connectionless, unreliable, and places a very low burden on hosts and networks?",
+                options: [
+                    "TCP",
+                    "UDP (User Datagram Protocol)",
+                    "HTTP",
+                    "HDLC"
+                ],
+                correct: 1,
+                explanation: "UDP is the lightweight, connectionless, unreliable transport protocol designed for speed and minimal overhead."
+            },
+            {
+                id: 57,
+                question: "Which transport protocol is connection-oriented, reliable, and places a heavy burden on hosts and networks?",
+                options: [
+                    "UDP",
+                    "IP",
+                    "TCP (Transmission Control Protocol)",
+                    "Ethernet"
+                ],
+                correct: 2,
+                explanation: "TCP provides full reliability and connection management, which requires significantly higher host and network processing overhead."
+            },
+            {
+                id: 58,
+                question: "Which set of applications typical uses TCP as their transport protocol?",
+                options: [
+                    "VoIP, Live Streaming, Online Gaming",
+                    "Web Browsing (HTTP), File Transfer (FTP), Email (SMTP)",
+                    "Ethernet switching, Cable testing, Wi-Fi beaconing",
+                    "Ping, Traceroute, Router advertisements"
+                ],
+                correct: 1,
+                explanation: "HTTP, FTP, and Email require 100% accurate data delivery without missing bytes, making TCP mandatory."
+            },
+            {
+                id: 59,
+                question: "Which set of applications typical uses UDP as their transport protocol?",
+                options: [
+                    "E-Commerce transactions, Database synchronization, Web browsing",
+                    "Live Video Streaming, Online Gaming, Voice over IP (VoIP)",
+                    "File downloads, Operating system updates, Email attachments",
+                    "Domain Name System (DNS) zone transfers"
+                ],
+                correct: 1,
+                explanation: "Live video streaming, online games, and VoIP prioritize real-time speed over retransmission, making UDP ideal."
+            },
+            {
+                id: 60,
+                question: "When does DNS (Domain Name System) use UDP versus TCP?",
+                options: [
+                    "DNS uses TCP for regular queries, and UDP for zone transfers",
+                    "DNS uses UDP for quick Query/Reply messages, and TCP for heavy Zone Transfers",
+                    "DNS uses UDP exclusively for all operations",
+                    "DNS uses TCP exclusively for all operations"
+                ],
+                correct: 1,
+                explanation: "DNS uses UDP for light, fast Query/Reply transactions, but switches to TCP for large, reliable Zone Transfers between servers."
+            },
+
+            // Topic 7: Vertical/Horizontal Communication, Encapsulation & Layer Devices (Q61 - Q70)
+            {
+                id: 61,
+                question: "What is 'Encapsulation' in layered communication?",
+                options: [
+                    "Placing a higher-layer message inside the Data Field of a lower-layer message and adding a lower-layer header",
+                    "Converting analog signals into digital bits",
+                    "Stripping headers off incoming frames at the destination host",
+                    "Dividing a single router into multiple virtual switches"
+                ],
+                correct: 0,
+                explanation: "Encapsulation occurs when a lower-layer process (N-1) takes a higher-layer message (N), puts it into its data field, and prepends its own header."
+            },
+            {
+                id: 62,
+                question: "On a source host sending an HTTP request over Ethernet, what is the correct pattern of headers/trailers from LEFT to RIGHT in the final frame?",
+                options: [
+                    "[Eth Trailer] [HTTP Msg] [TCP Hdr] [IP Hdr] [Eth Hdr]",
+                    "[Eth Hdr] [IP Hdr] [TCP Hdr] [HTTP Msg] [Eth Trailer]",
+                    "[HTTP Msg] [TCP Hdr] [IP Hdr] [Eth Hdr] [Eth Trailer]",
+                    "[IP Hdr] [Eth Hdr] [TCP Hdr] [HTTP Msg] [Eth Trailer]"
+                ],
+                correct: 0,
+                explanation: "As depicted in the slides from left to right: Eth Trailer (L2), HTTP Msg (L5), TCP Hdr (L4), IP Hdr (L3), Eth Hdr (L2)."
+            },
+            {
+                id: 63,
+                question: "What happens at Layer 1 (Physical Layer) during encapsulation on the source host?",
+                options: [
+                    "Layer 1 adds a physical header and trailer to the frame",
+                    "Layer 1 converts the bits of the frame into physical signals; no encapsulation or headers occur at Layer 1",
+                    "Layer 1 checks the IP destination address for errors",
+                    "Layer 1 fragments the message into 46-byte segments"
+                ],
+                correct: 1,
+                explanation: "There are no messages or headers at Layer 1. The Physical Layer simply converts frame bits into signals for transmission."
+            },
+            {
+                id: 64,
+                question: "What is 'Decapsulation' on the destination host?",
+                options: [
+                    "The process of stripping lower-layer headers and passing inner data fields UP to higher layers",
+                    "The process of adding Ethernet trailers to IP packets",
+                    "The retransmission of lost TCP segments",
+                    "The assignment of 48-bit MAC addresses to incoming packets"
+                ],
+                correct: 0,
+                explanation: "Decapsulation is the reverse process at the receiver: stripping headers/trailers off at each layer and passing the encapsulated payload UP to the next layer."
+            },
+            {
+                id: 65,
+                question: "LAN switches are classified as 'Layer 2 Devices' because:",
+                options: [
+                    "They possess only two physical ports",
+                    "The highest layer process they execute to forward frames is Layer 2 (Data Link Layer)",
+                    "They can route packets across the global Internet",
+                    "They do not use physical cables"
+                ],
+                correct: 1,
+                explanation: "A device's 'layer' is determined by the highest layer process it uses. Switches process up to Layer 2 (Data Link) to forward frames."
+            },
+            {
+                id: 66,
+                question: "Routers are classified as 'Layer 3 Devices' because:",
+                options: [
+                    "They process up to Layer 3 (Internet Layer) to route packets across networks",
+                    "They have three antenna connectors for Wi-Fi",
+                    "They run application software like HTTP and FTP natively",
+                    "They connect exactly three host computers"
+                ],
+                correct: 0,
+                explanation: "Routers inspect Layer 3 (IP) headers to make routing decisions between networks, making them Layer 3 devices."
+            },
+            {
+                id: 67,
+                question: "How many layers of the Hybrid model must be present and active on source and destination HOST computers?",
+                options: [
+                    "Only Layer 1 and Layer 2",
+                    "Only Layer 3 and Layer 4",
+                    "All 5 Layers (Application, Transport, Internet, Data Link, Physical)",
+                    "Only Layer 5"
+                ],
+                correct: 2,
+                explanation: "Host computers execute applications and terminate connections, so they process all 5 layers of the network model."
+            },
+            {
+                id: 68,
+                question: "In supervisory protocols like ICMP (Internet Control Message Protocol), which layer INITIATES the communication?",
+                options: [
+                    "Layer 5 (Application Layer)",
+                    "Layer 4 (Transport Layer)",
+                    "Layer 3 (Internet Layer) initiates communication, so Layers 4 and 5 are NOT involved",
+                    "Layer 1 (Physical Layer)"
+                ],
+                correct: 2,
+                explanation: "ICMP is a Layer 3 supervisory protocol. Communication starts at Layer 3 on a router or host, so Layers 4 and 5 are completely bypassed."
+            },
+            {
+                id: 69,
+                question: "What is 'Horizontal Communication' in networking?",
+                options: [
+                    "Communication between adjacent layers on the same local computer",
+                    "Logical communication between peer processes running on different devices (hosts, switches, routers) using protocols",
+                    "The flow of data down a single protocol stack from L5 to L1",
+                    "The physical connection between two switches using flat cables"
+                ],
+                correct: 1,
+                explanation: "Horizontal communication is peer-to-peer logical communication across devices using standardized protocols (e.g., HTTP process to HTTP process)."
+            },
+            {
+                id: 70,
+                question: "What is 'Vertical Communication' in networking?",
+                options: [
+                    "Communication between peer application processes across the Internet",
+                    "Interaction and data passing between adjacent layer processes on the SAME host device",
+                    "Signal propagation through vertical wireless towers",
+                    "Sending emails from a mobile phone to a server"
+                ],
+                correct: 1,
+                explanation: "Vertical communication links adjacent layer processes on the same device as messages pass up or down the protocol stack."
+            }
+        ];
+
+        let userAnswers = {};
+
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const qCard = document.createElement('div');
+                qCard.className = 'question-card';
+                qCard.id = `q-card-${q.id}`;
+
+                const qHeader = document.createElement('div');
+                qHeader.className = 'question-header';
+                
+                const qNum = document.createElement('span');
+                qNum.className = 'question-number';
+                qNum.innerText = `Question ${index + 1} of 70`;
+                
+                qHeader.appendChild(qNum);
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.innerText = q.question;
+
+                const optionsGrid = document.createElement('div');
+                optionsGrid.className = 'options-grid';
+
+                const letters = ['A', 'B', 'C', 'D'];
+
+                q.options.forEach((optText, optIndex) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.id = `q-${q.id}-opt-${optIndex}`;
+                    btn.onclick = () => selectOption(q.id, optIndex);
+
+                    const letterSpan = document.createElement('span');
+                    letterSpan.className = 'option-letter';
+                    letterSpan.innerText = letters[optIndex];
+
+                    const textSpan = document.createElement('span');
+                    textSpan.innerText = optText;
+
+                    btn.appendChild(letterSpan);
+                    btn.appendChild(textSpan);
+                    optionsGrid.appendChild(btn);
+                });
+
+                const explanationBox = document.createElement('div');
+                explanationBox.className = 'explanation-box';
+                explanationBox.id = `explanation-${q.id}`;
+
+                qCard.appendChild(qHeader);
+                qCard.appendChild(qText);
+                qCard.appendChild(optionsGrid);
+                qCard.appendChild(explanationBox);
+
+                container.appendChild(qCard);
+            });
+        }
+
+        function selectOption(questionId, selectedOptIndex) {
+            if (userAnswers[questionId] !== undefined) return; // Prevent re-answering
+
+            userAnswers[questionId] = selectedOptIndex;
+
+            const q = questions.find(item => item.id === questionId);
+            const isCorrect = selectedOptIndex === q.correct;
+
+            // Update option styles
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`q-${questionId}-opt-${i}`);
+                btn.disabled = true;
+
+                if (i === q.correct) {
+                    btn.classList.add('correct');
+                } else if (i === selectedOptIndex) {
+                    btn.classList.add('incorrect');
+                }
+            }
+
+            // Display Explanation Box
+            const expBox = document.getElementById(`explanation-${questionId}`);
+            const letters = ['A', 'B', 'C', 'D'];
+
+            if (isCorrect) {
+                expBox.className = 'explanation-box show-correct';
+                expBox.innerHTML = `
+                    <div class="explanation-title">Correct Answer! (${letters[q.correct]})</div>
+                    <div>${q.explanation}</div>
+                `;
+            } else {
+                expBox.className = 'explanation-box show-incorrect';
+                expBox.innerHTML = `
+                    <div class="explanation-title">Incorrect! You selected (${letters[selectedOptIndex]}). Correct Answer is (${letters[q.correct]})</div>
+                    <div>${q.explanation}</div>
+                `;
+            }
+
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+            const totalAnswered = Object.keys(userAnswers).length;
+            let correctCount = 0;
+
+            Object.keys(userAnswers).forEach(qId => {
+                const q = questions.find(item => item.id == qId);
+                if (userAnswers[qId] === q.correct) {
+                    correctCount++;
+                }
+            });
+
+            const percentage = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
+
+            document.getElementById('score').innerText = correctCount;
+            document.getElementById('total-answered').innerText = totalAnswered;
+            document.getElementById('percentage').innerText = `${percentage}%`;
+
+            const progressPercent = (totalAnswered / questions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
+        }
+
+        function resetExam() {
+            if (confirm("Are you sure you want to reset all answers and restart the practice lab?")) {
+                userAnswers = {};
+                renderQuiz();
+                updateDashboard();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
+
+        // Initialize quiz on load
+        window.onload = () => {
+            renderQuiz();
+            updateDashboard();
+        };
+    </script>
+</body>
+</html>
