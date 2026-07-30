@@ -1,1280 +1,1806 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chapter 2: Network Standards - Practice Exam Lab</title>
-    <style>
-        :root {
-            --primary-color: #1e3a8a;
-            --primary-hover: #1d4ed8;
-            --bg-color: #f8fafc;
-            --card-bg: #ffffff;
-            --text-color: #0f172a;
-            --text-muted: #64748b;
-            --correct-bg: #dcfce7;
-            --correct-border: #22c55e;
-            --correct-text: #14532d;
-            --incorrect-bg: #fee2e2;
-            --incorrect-border: #ef4444;
-            --incorrect-text: #7f1d1d;
-            --border-color: #e2e8f0;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agile & Software Engineering Master Assessment Lab (100 MCQs)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --primary-light: #eeeffe;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --success: #10b981;
+      --success-light: #d1fae5;
+      --danger: #ef4444;
+      --danger-light: #fee2e2;
+      --warning: #f59e0b;
+      --radius: 12px;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding-bottom: 60px;
+    }
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            padding-bottom: 60px;
-        }
+    header {
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
 
-        header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2rem 1rem;
-            text-align: center;
-            box-shadow: var(--shadow);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
+    .header-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
 
-        header h1 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
+    .brand h1 { font-size: 1.25rem; font-weight: 700; color: var(--primary); }
+    .brand p { font-size: 0.85rem; color: var(--text-muted); }
 
-        header p {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
+    .score-board {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--bg);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .score-item { text-align: center; }
+    .score-item .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); }
+    .score-item .value { font-size: 1.1rem; font-weight: 700; }
+    .score-item.correct .value { color: var(--success); }
+    .score-item.incorrect .value { color: var(--danger); }
+    .score-divider { width: 1px; height: 24px; background: var(--border); }
 
-        .dashboard {
-            max-width: 900px;
-            margin: 1.5rem auto;
-            padding: 1rem;
-            background: var(--card-bg);
-            border-radius: 12px;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
+    .progress-bar-container {
+      width: 100%;
+      height: 6px;
+      background: #e2e8f0;
+      position: relative;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      width: 1%;
+      transition: width 0.3s ease;
+    }
 
-        .score-box {
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
+    main {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
 
-        .score-box span {
-            color: var(--primary-color);
-        }
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
 
-        .progress-bar-container {
-            flex-grow: 1;
-            min-width: 200px;
-            height: 12px;
-            background-color: var(--border-color);
-            border-radius: 6px;
-            overflow: hidden;
-        }
+    .meta-tag {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
 
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background-color: var(--primary-color);
-            transition: width 0.3s ease;
-        }
+    .question-header {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 1.5rem;
+    }
 
-        .reset-btn {
-            background-color: #dc2626;
-            color: white;
-            border: none;
-            padding: 0.6rem 1.2rem;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
 
-        .reset-btn:hover {
-            background-color: #b91c1c;
-        }
+    .option-btn {
+      width: 100%;
+      text-align: left;
+      padding: 1rem 1.25rem;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 0 1rem;
-        }
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
 
-        .question-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border-color);
-        }
+    .option-prefix {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
 
-        .question-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1rem;
-        }
+    .option-btn.correct {
+      background: var(--success-light) !important;
+      border-color: var(--success) !important;
+      color: #065f46;
+    }
+    .option-btn.correct .option-prefix {
+      background: var(--success);
+      color: white;
+      border-color: var(--success);
+    }
 
-        .question-number {
-            font-size: 0.85rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: #eff6ff;
-            padding: 0.25rem 0.6rem;
-            border-radius: 4px;
-        }
+    .option-btn.incorrect {
+      background: var(--danger-light) !important;
+      border-color: var(--danger) !important;
+      color: #991b1b;
+    }
+    .option-btn.incorrect .option-prefix {
+      background: var(--danger);
+      color: white;
+      border-color: var(--danger);
+    }
 
-        .question-text {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 1.2rem;
-            color: var(--text-color);
-        }
+    .explanation-box {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      background: #f1f5f9;
+      border-left: 4px solid var(--primary);
+      display: none;
+    }
+    .explanation-box h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 0.4rem;
+    }
+    .explanation-box p {
+      font-size: 0.9rem;
+      color: #334155;
+    }
 
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 0.75rem;
-        }
+    .controls-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
 
-        .option-btn {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.85rem 1rem;
-            text-align: left;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: flex-start;
-            gap: 0.75rem;
-            color: var(--text-color);
-        }
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius);
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-secondary { background: #e2e8f0; color: var(--text-main); }
+    .btn-secondary:hover { background: #cbd5e1; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .option-btn:hover:not(:disabled) {
-            background: #f1f5f9;
-            border-color: #cbd5e1;
-        }
-
-        .option-letter {
-            font-weight: 700;
-            background: #e2e8f0;
-            color: var(--text-color);
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 0.85rem;
-        }
-
-        .option-btn:disabled {
-            cursor: default;
-        }
-
-        .option-btn.correct {
-            background-color: var(--correct-bg);
-            border-color: var(--correct-border);
-            color: var(--correct-text);
-        }
-
-        .option-btn.correct .option-letter {
-            background-color: var(--correct-border);
-            color: white;
-        }
-
-        .option-btn.incorrect {
-            background-color: var(--incorrect-bg);
-            border-color: var(--incorrect-border);
-            color: var(--incorrect-text);
-        }
-
-        .option-btn.incorrect .option-letter {
-            background-color: var(--incorrect-border);
-            color: white;
-        }
-
-        .explanation-box {
-            margin-top: 1.2rem;
-            padding: 1rem 1.2rem;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .explanation-box.show-correct {
-            display: block;
-            background-color: #f0fdf4;
-            border-left: 4px solid var(--correct-border);
-            color: #166534;
-        }
-
-        .explanation-box.show-incorrect {
-            display: block;
-            background-color: #fef2f2;
-            border-left: 4px solid var(--incorrect-border);
-            color: #991b1b;
-        }
-
-        .explanation-title {
-            font-weight: 700;
-            margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @media (max-width: 600px) {
-            header h1 { font-size: 1.4rem; }
-            .dashboard { flex-direction: column; align-items: stretch; }
-            .score-box { text-align: center; }
-        }
-    </style>
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 23, 42, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--radius);
+      max-width: 650px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .grid-navigator {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .grid-num {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .grid-num.current { border-color: var(--primary); border-width: 2px; color: var(--primary); }
+    .grid-num.correct { background: var(--success); color: white; border-color: var(--success); }
+    .grid-num.incorrect { background: var(--danger); color: white; border-color: var(--danger); }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Chapter 2: Network Standards Practice Lab</h1>
-        <p>70 University Exam-Level Multiple Choice Questions</p>
-    </header>
+  <header>
+    <div class="header-container">
+      <div class="brand">
+        <h1>Software Engineering Assessment Lab</h1>
+        <p>Ian Sommerville Framework (100 Comprehensive MCQs)</p>
+      </div>
+      <div class="score-board">
+        <div class="score-item">
+          <div class="label">Question</div>
+          <div class="value" id="q-tracker">1 / 100</div>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item correct">
+          <div class="label">Correct</div>
+          <div class="value" id="correct-count">0</div>
+        </div>
+        <div class="score-divider"></div>
+        <div class="score-item incorrect">
+          <div class="label">Incorrect</div>
+          <div class="value" id="incorrect-count">0</div>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" id="progress-fill"></div>
+    </div>
+  </header>
 
-    <div class="dashboard">
-        <div class="score-box">
-            Score: <span id="score">0</span> / <span id="total-answered">0</span> (<span id="percentage">0%</span>)
+  <main>
+    <div class="card" id="quiz-card">
+      <span class="meta-tag" id="category-tag">Agile Software Engineering</span>
+      <h2 class="question-header" id="question-text">Loading Question...</h2>
+      <div class="options-grid" id="options-container">
         </div>
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="progress-bar"></div>
-        </div>
-        <button class="reset-btn" onclick="resetExam()">Reset Exam</button>
+      <div class="explanation-box" id="explanation-box">
+        <h4>Explanation:</h4>
+        <p id="explanation-text"></p>
+      </div>
     </div>
 
-    <div class="container" id="quiz-container">
-        <!-- Questions will be injected here dynamically -->
+    <div class="controls-bar">
+      <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()">← Previous</button>
+      <button class="btn btn-secondary" onclick="toggleModal(true)">📑 Jump to Question</button>
+      <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next →</button>
     </div>
+  </main>
 
-    <script>
-        const questions = [
-            // Topic 1: Network Standards Basics (Q1 - Q10)
-            {
-                id: 1,
-                question: "What is the primary definition of network standards (also known as protocols)?",
-                options: [
-                    "Hardware specifications for constructing fiber-optic cables",
-                    "Rigid rules governing the exchange of messages between hardware/software processes on different host computers",
-                    "A set of informal guidelines for software developers writing web applications",
-                    "Operating system algorithms for managing local processor threads"
-                ],
-                correct: 1,
-                explanation: "Network standards (protocols) are rigid rules governing message exchange between hardware or software processes across different hosts. Because computers lack human intelligence, these rules must be strict."
-            },
-            {
-                id: 2,
-                question: "Why must network standards and protocols be extremely rigid?",
-                options: [
-                    "Because network bandwidth is inherently unlimited",
-                    "Because computers are not intelligent and cannot interpret ambiguous rules",
-                    "To allow human operators to manually configure every packet",
-                    "To prevent hardware components from overheating during transmission"
-                ],
-                correct: 1,
-                explanation: "Computers are not intelligent, so standards must be very rigid so systems can automatically process incoming messages without ambiguity."
-            },
-            {
-                id: 3,
-                question: "Which three core elements are governed by message standards?",
-                options: [
-                    "Voltage, Current, and Resistance",
-                    "Syntax, Semantics, and Message Order",
-                    "Compression, Encryption, and Archiving",
-                    "Routing, Switching, and Bridging"
-                ],
-                correct: 1,
-                explanation: "Message standards govern three primary aspects: Message Syntax (structure), Message Semantics (meaning), and Message Order (interaction timing)."
-            },
-            {
-                id: 4,
-                question: "How is 'Message Syntax' best defined in network communications?",
-                options: [
-                    "The operational meaning behind a request or response field",
-                    "The structural organization of a message into fields like headers, data fields, and trailers",
-                    "The sequence in which two host computers take turns speaking",
-                    "The speed at which bits are transmitted over a physical medium"
-                ],
-                correct: 1,
-                explanation: "Message syntax refers to how a message is organized, structured, or formatted—analogous to human grammar, but far more rigid."
-            },
-            {
-                id: 5,
-                question: "An HTTP request message states: 'Please give me this file.' This statement is an example of message:",
-                options: [
-                    "Syntax",
-                    "Order",
-                    "Semantics",
-                    "Fragmentation"
-                ],
-                correct: 2,
-                explanation: "Message semantics refers to the meaning of a message. An HTTP request's semantics is asking the server to deliver a specific file."
-            },
-            {
-                id: 6,
-                question: "Which of the following is governed by 'Message Order'?",
-                options: [
-                    "The length of the destination MAC address field",
-                    "Turn-taking, initiating communication, and the sequence of messages in complex transactions",
-                    "The calculation of the Frame Check Sequence (FCS)",
-                    "The conversion of binary bits into electrical voltage pulses"
-                ],
-                correct: 1,
-                explanation: "Message order dictates turn-taking, which host must initiate communication, and how multi-step transactions progress sequentially."
-            },
-            {
-                id: 7,
-                question: "What are the three potential primary parts of a general network message?",
-                options: [
-                    "Preamble, Body, and Postscript",
-                    "Header, Data Field, and Trailer",
-                    "Address, Payload, and Checksum",
-                    "Source, Destination, and Route"
-                ],
-                correct: 1,
-                explanation: "General message syntax divides messages into a Header (everything before data), a Data Field (content delivered), and a Trailer (everything after data)."
-            },
-            {
-                id: 8,
-                question: "By definition, what is a message 'Header'?",
-                options: [
-                    "Everything inside the data field",
-                    "Everything that comes after the data field",
-                    "Everything that comes before the data field",
-                    "The physical connection between host interfaces"
-                ],
-                correct: 2,
-                explanation: "The header consists of everything that precedes the data field in a network message."
-            },
-            {
-                id: 9,
-                question: "Which message part is used by switches and routers to direct messages across a network?",
-                options: [
-                    "The user payload inside the data field",
-                    "The destination address field located in the header",
-                    "The trailer padding bits",
-                    "The LLC subheader extension"
-                ],
-                correct: 1,
-                explanation: "Switches and routers inspect the destination address field inside the message header (like an address on an envelope) to forward data."
-            },
-            {
-                id: 10,
-                question: "TCP supervisory messages (like pure ACKs or SYN packets) are unique because they consist of:",
-                options: [
-                    "Only a data field with no header",
-                    "Only a trailer and a preamble",
-                    "Only a header with no data field content",
-                    "Only physical layer preamble bits"
-                ],
-                correct: 2,
-                explanation: "Pure TCP supervisory messages carry no application content; they are 'pure headers' containing control flags and sequence/ACK numbers."
-            },
+  <div class="modal-overlay" id="grid-modal" onclick="if(event.target===this) toggleModal(false)">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+        <h3>Question Navigator</h3>
+        <button class="btn btn-secondary" style="padding:0.4rem 0.8rem" onclick="toggleModal(false)">✕ Close</button>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-muted);">Click any number below to jump directly to that question:</p>
+      <div class="grid-navigator" id="grid-container"></div>
+    </div>
+  </div>
 
-            // Topic 2: Reliability & Connection Orientation (Q11 - Q20)
-            {
-                id: 11,
-                question: "To be classified as a 'Reliable Protocol', a protocol MUST perform:",
-                options: [
-                    "Error detection only",
-                    "Both error detection AND error correction (retransmission)",
-                    "Data encryption and compression",
-                    "Hop-by-hop switching across all routers"
-                ],
-                correct: 1,
-                explanation: "Reliability requires BOTH error detection AND error correction. Protocols that drop damaged messages without retransmitting them are unreliable."
-            },
-            {
-                id: 12,
-                question: "Why is HTTP considered an 'unreliable protocol'?",
-                options: [
-                    "It cannot detect bit errors in the header",
-                    "If an HTTP message is lost or damaged, HTTP itself does not perform retransmission",
-                    "It operates exclusively at the physical layer",
-                    "It requires a formal 3-way handshake prior to sending data"
-                ],
-                correct: 1,
-                explanation: "HTTP is unreliable because it lacks error correction mechanisms. If an HTTP message is lost, HTTP relies on TCP underneath to fix it."
-            },
-            {
-                id: 13,
-                question: "How does the Transmission Control Protocol (TCP) achieve reliability?",
-                options: [
-                    "By discarding corrupt frames at switches",
-                    "By requiring the receiver to acknowledge correct segments and having the sender retransmit unacknowledged segments",
-                    "By forcing routers to store all packets indefinitely",
-                    "By limiting transmission speeds to 10 Mbps"
-                ],
-                correct: 1,
-                explanation: "TCP uses Acknowledgments (ACKs). If a sender does not receive an ACK for a segment within a timeout period, it retransmits that segment."
-            },
-            {
-                id: 14,
-                question: "What defines a 'Connection-Oriented Protocol'?",
-                options: [
-                    "It sends messages immediately without prior agreement between hosts",
-                    "It has formal connection-opening and connection-closing procedures",
-                    "It relies exclusively on wireless radio communication",
-                    "It avoids using sequence numbers in message headers"
-                ],
-                correct: 1,
-                explanation: "Connection-oriented protocols have formal openings and closings (like telephone calls) to establish and terminate communication state."
-            },
-            {
-                id: 15,
-                question: "Which protocol type gives every message a unique sequence number?",
-                options: [
-                    "Connectionless protocols",
-                    "Connection-oriented protocols",
-                    "Physical layer specifications",
-                    "Unreliable datagram protocols"
-                ],
-                correct: 1,
-                explanation: "Connection-oriented protocols assign sequence numbers to messages to order them, detect missing gaps, and handle reassembly."
-            },
-            {
-                id: 16,
-                question: "Sequence numbers in connection-oriented protocols allow receiver hosts to:",
-                options: [
-                    "Bypass physical layer cabling requirements",
-                    "Detect lost messages (gaps) and reassemble fragmented application messages",
-                    "Determine the MAC address of intermediate switches",
-                    "Encrypt HTTP headers automatically"
-                ],
-                correct: 1,
-                explanation: "Sequence numbers allow receiving hosts to detect missing messages (gaps in sequence) and reassemble fragments in proper order."
-            },
-            {
-                id: 17,
-                question: "What is a major disadvantage of connection-oriented protocols like TCP?",
-                options: [
-                    "They cannot perform error detection",
-                    "They place a heavy load and high overhead on networks and hosts",
-                    "They are limited to single switched local networks",
-                    "They cannot carry application layer messages"
-                ],
-                correct: 1,
-                explanation: "Connection-oriented protocols require extra processing cycles and supervisory traffic (e.g., ~7 messages to open/close), creating high overhead."
-            },
-            {
-                id: 18,
-                question: "Roughly how many total supervisory messages are required to open and close a formal TCP connection?",
-                options: [
-                    "2 messages",
-                    "7 messages",
-                    "15 messages",
-                    "100 messages"
-                ],
-                correct: 1,
-                explanation: "Opening (3-way handshake) and closing (4-way teardown) a TCP connection consumes about 7 control messages total."
-            },
-            {
-                id: 19,
-                question: "HTTP is connectionless. This means HTTP:",
-                options: [
-                    "Establishes a formal handshake before requesting a web page",
-                    "Simply sends request messages without prior connection openings or closing messages",
-                    "Guarantees that every packet arrives without error",
-                    "Uses 48-bit MAC addresses to route packets across the Internet"
-                ],
-                correct: 1,
-                explanation: "Connectionless protocols (like HTTP, IP, UDP, and Ethernet) transmit messages immediately without establishing or closing connections."
-            },
-            {
-                id: 20,
-                question: "What process breaks long application messages into smaller pieces to fit inside network packets?",
-                options: [
-                    "Encapsulation",
-                    "Fragmentation",
-                    "Multiplexing",
-                    "Decapsulation"
-                ],
-                correct: 1,
-                explanation: "Fragmentation divides large application messages into smaller fragments small enough to fit inside individual packets."
-            },
+  <script>
+    const quizData = [
+      {
+        id: 1,
+        category: "Agile Software Engineering",
+        question: "Why is rapid software development and delivery essential for modern software products?",
+        options: [
+          "Because plan-driven methods have proven to be entirely obsolete for all software types.",
+          "Because software products must be brought to market quickly to capture business opportunities.",
+          "Because agile software engineering eliminates the need for testing and quality assurance.",
+          "Because customers require detailed long-term documentation before using any system."
+        ],
+        answer: 1,
+        explanation: "Software products must be brought to market quickly, making rapid development essential. Plan-driven development is still used for long-lifetime systems like aircraft controls."
+      },
+      {
+        id: 2,
+        category: "Software Products",
+        question: "Which of the following correctly differentiates Generic software systems from Customized software systems?",
+        options: [
+          "Generic software ownership remains with the developer/vendor, whereas customized software is owned by the purchasing client.",
+          "Generic software is developed specifically after analyzing a single client's unique requirements.",
+          "Customized software is designed based on market research to serve a general-purpose audience.",
+          "Maintenance for generic software relies solely on specific customer contracts rather than vendor updates."
+        ],
+        answer: 0,
+        explanation: "Generic software is developed based on market research and owned by the vendor company. Customized software is built for a specific client who owns the system."
+      },
+      {
+        id: 3,
+        category: "Software Products",
+        question: "In Project-based software engineering (Figure 1.1), what is the primary starting driver of the development cycle?",
+        options: [
+          "A business opportunity discovered solely by the developer.",
+          "A set of user stories formulated by a ScrumMaster.",
+          "A specific operational problem owned by an external customer that generates requirements.",
+          "An architectural prototype created by an internal R&D team."
+        ],
+        answer: 2,
+        explanation: "Project-based software engineering starts with a specific problem owned by a customer, which generates requirements that the developer implements."
+      },
+      {
+        id: 4,
+        category: "Agile Software Engineering",
+        question: "According to the Agile Manifesto, what is valued OVER comprehensive documentation?",
+        options: [
+          "Contract negotiation",
+          "Following a plan",
+          "Processes and tools",
+          "Working software"
+        ],
+        answer: 3,
+        explanation: "The Agile Manifesto explicitly states: 'Working software over comprehensive documentation'."
+      },
+      {
+        id: 5,
+        category: "Agile Software Engineering",
+        question: "In incremental software development, how are features defined and implemented?",
+        options: [
+          "All system features are fully detailed and frozen before writing any executable code.",
+          "Features are prioritized, and detailed specification occurs only for the feature being implemented in the current increment.",
+          "Features are randomly chosen without consideration of priority or user feedback.",
+          "Architectural frameworks are delivered first without any functional user features."
+        ],
+        answer: 1,
+        explanation: "In incremental development, features are prioritized, and details are defined only during the increment in which that feature is implemented."
+      },
+      {
+        id: 6,
+        category: "Software Products",
+        question: "How does a 'Platform' differ from a 'Software Product Line' according to Sommerville?",
+        options: [
+          "A platform consists of common core software adapted for specific external customers.",
+          "A platform provides basic functionality and environment that allows external application developers to build new applications on top of it.",
+          "A software product line is designed exclusively to run stand-alone applications on mobile devices.",
+          "There is no difference; both terms refer strictly to hardware components."
+        ],
+        answer: 1,
+        explanation: "A platform (e.g., Facebook API) provides core functionality allowing third-party developers to build new apps over it, whereas a product line shares a common core adapted for custom clients."
+      },
+      {
+        id: 7,
+        category: "Software Products",
+        question: "In the Software as a Service (SaaS) execution model, where does the main product functionality and user data reside?",
+        options: [
+          "Entirely on the user's personal computer.",
+          "Partially on the user's computer and partially on the server.",
+          "Entirely on the product developer/vendor's servers, accessed via browser or app.",
+          "On offline backup drives owned by external contractors."
+        ],
+        answer: 2,
+        explanation: "In SaaS, all product functionality and user data reside on the vendor's servers, while the customer's device runs only the UI."
+      },
+      {
+        id: 8,
+        category: "Software Products",
+        question: "What key characteristic is shared by student projects, research software, and internal tool development?",
+        options: [
+          "They are all governed by strict long-term commercial SLA contracts.",
+          "They are always sold directly on public app stores as generic products.",
+          "They require explicit approval from an external client before feature changes.",
+          "There is no external client dictating requirements or paying for development."
+        ],
+        answer: 3,
+        explanation: "Non-customer software development (student projects, research tools, internal software) lacks an external customer dictating requirements."
+      },
+      {
+        id: 9,
+        category: "Software Products",
+        question: "In Geoffrey Moore's Product Vision template, what does the 'UNLIKE' element specify?",
+        options: [
+          "The primary competitive alternative currently in the market.",
+          "The primary target customer segment.",
+          "The core technical stack and architectural frameworks used.",
+          "The financial statement of overall product profitability."
+        ],
+        answer: 0,
+        explanation: "In Moore's template: 'UNLIKE [primary competitive alternative]', highlighting what the product is competing against."
+      },
+      {
+        id: 10,
+        category: "Software Products",
+        question: "Software Product Management operates at the critical intersection of which three domains?",
+        options: [
+          "Coding, Database Design, and Hardware Infrastructure",
+          "Business Needs, Technology Constraints, and Customer Experience",
+          "Contract Negotiation, Legal Compliance, and Budget Auditing",
+          "Plan-driven processes, Waterfall architecture, and Quality Inspection"
+        ],
+        answer: 1,
+        explanation: "Product management concerns reside at the intersection of Business Needs, Technology Constraints, and Customer Experience."
+      },
+      {
+        id: 11,
+        category: "Software Products",
+        question: "What is the primary difference between a Persona and a Scenario in product development?",
+        options: [
+          "A persona is an architectural diagram, while a scenario is a financial report.",
+          "A scenario represents a target user profile, while a persona describes automated test scripts.",
+          "A persona is an imagined representative user profile, while a scenario is a story describing how that user performs a task.",
+          "Personas are used only in plan-driven methods, while scenarios belong exclusively to Scrum."
+        ],
+        answer: 2,
+        explanation: "Personas represent target user profiles (who uses it), while Scenarios describe realistic user stories and workflows (how it is used)."
+      },
+      {
+        id: 12,
+        category: "Software Products",
+        question: "What is 'Vision Drift' in product management?",
+        options: [
+          "The scheduled rotation of Product Managers across different departments.",
+          "The continuous migration of code from on-premise servers to cloud environments.",
+          "The process of refactoring UI code to improve user experience.",
+          "The gradual deviation of product development away from its intended core product vision."
+        ],
+        answer: 3,
+        explanation: "Product Vision Management ensures proposed changes align with the vision to prevent 'vision drift' (losing focus on original goals)."
+      },
+      {
+        id: 13,
+        category: "Software Products",
+        question: "What is the primary objective of the 'Feasibility Demonstration' stage in two-stage prototyping?",
+        options: [
+          "To create an executable system showing that new ideas work and demonstrate superior features to funders.",
+          "To collect final acceptance signatures from external customer legal teams.",
+          "To write full documentation and user manuals for long-term maintenance.",
+          "To deploy the prototype directly into production for full consumer use."
+        ],
+        answer: 0,
+        explanation: "Feasibility demonstration shows that new technical ideas work and displays competitive advantages to managers/funders."
+      },
+      {
+        id: 14,
+        category: "Software Products",
+        question: "Why should a product prototype typically be treated as a 'throw-away' prototype?",
+        options: [
+          "Because prototypes are written in obsolete machine code that browsers cannot render.",
+          "Because prototype code ignores essential quality factors like security, reliability, and scalability.",
+          "Because company management strictly prohibits reusing any prototype components.",
+          "Because customers dislike interactive prototypes and prefer text specification documents."
+        ],
+        answer: 1,
+        explanation: "Prototypes focus on fast feature validation and skip critical quality requirements (security, performance, robust architecture), so they must be rebuilt properly."
+      },
+      {
+        id: 15,
+        category: "Agile Software Engineering",
+        question: "Plan-driven development originally evolved to support what type of systems?",
+        options: [
+          "Small mobile applications with rapidly changing specifications.",
+          "Web-based SaaS products needing daily feature rollouts.",
+          "Large, long-lifetime systems (e.g., aircraft control) built by geographically dispersed teams.",
+          "Internal throw-away scripts built by individual researchers."
+        ],
+        answer: 2,
+        explanation: "Plan-driven development evolved to support large, long-lifetime systems where dispersed teams work over several years."
+      },
+      {
+        id: 16,
+        category: "Agile Software Engineering",
+        question: "Extreme Programming (XP), pushed recognized good practices to extreme levels. Who coined this term in 1998?",
+        options: [
+          "Ian Sommerville",
+          "Geoffrey Moore",
+          "Ken Schwaber",
+          "Kent Beck"
+        ],
+        answer: 3,
+        explanation: "Kent Beck coined Extreme Programming (XP) in 1998."
+      },
+      {
+        id: 17,
+        category: "Agile Software Engineering",
+        question: "In Test-Driven Development (TDD), when are unit tests written by developers?",
+        options: [
+          "BEFORE writing the functional application code.",
+          "AFTER completing code integration into the main codebase.",
+          "During the final project closure phase by external QA auditors.",
+          "Only when a bug is reported by end-users in production."
+        ],
+        answer: 0,
+        explanation: "In TDD, developers write executable tests BEFORE writing the code, clarifying expected behavior beforehand."
+      },
+      {
+        id: 18,
+        category: "Agile Software Engineering",
+        question: "What must happen in Continuous Integration (CI) before a new system version is accepted?",
+        options: [
+          "The Product Manager must rewrite all user stories.",
+          "All automated unit tests from all developers must run and succeed.",
+          "The team must spend 2 weeks writing formal SRS documentation.",
+          "Code must be approved by an external contract negotiator."
+        ],
+        answer: 1,
+        explanation: "In CI, work is integrated immediately, and all automated unit tests must pass for the build to be accepted."
+      },
+      {
+        id: 19,
+        category: "Agile Software Engineering",
+        question: "What is 'Refactoring' in agile software development?",
+        options: [
+          "Adding brand new customer features to the backlog during a sprint.",
+          "Replacing automated tests with manual inspection scripts.",
+          "Improving code structure, readability, efficiency, and security without altering its external functionality.",
+          "Delaying bug fixes until the final software release."
+        ],
+        answer: 2,
+        explanation: "Refactoring means improving internal code structure, maintainability, and readability without changing its external behavior."
+      },
+      {
+        id: 20,
+        category: "Agile Software Engineering",
+        question: "What distinguishes Scrum from Extreme Programming (XP)?",
+        options: [
+          "Scrum mandates test-driven development, whereas XP forbids automated testing.",
+          "Scrum is strictly plan-driven, whereas XP is entirely agile.",
+          "Scrum requires 50-person development teams, whereas XP requires single developers.",
+          "Scrum provides an agile project organization and planning framework without mandating specific technical practices."
+        ],
+        answer: 3,
+        explanation: "Scrum focuses on agile project management/planning frameworks and does not specify engineering practices (unlike XP)."
+      },
+      {
+        id: 21,
+        category: "Agile Software Engineering",
+        question: "What is the primary responsibility of the Product Owner in Scrum?",
+        options: [
+          "Ensuring the team focuses on building the right product features and prioritizing the product backlog.",
+          "Enforcing traditional project management deadlines and assigning daily code tasks.",
+          "Writing all system unit tests and executing stress tests.",
+          "Shielding developers from communicating with the ScrumMaster."
+        ],
+        answer: 0,
+        explanation: "The Product Owner identifies features, prioritizes the product backlog, and keeps the team focused on product value."
+      },
+      {
+        id: 22,
+        category: "Agile Software Engineering",
+        question: "What is a 'Product Backlog' in Scrum?",
+        options: [
+          "A list of completed software features delivered to the client.",
+          "A prioritized to-do list of incomplete items including features, user requests, bugs, and engineering improvements.",
+          "A formal contract specifying fixed costs and rigid delivery dates.",
+          "A set of rejected user stories that cannot be implemented."
+        ],
+        answer: 1,
+        explanation: "The product backlog is a prioritized list of all incomplete work items (features, bugs, tech improvements)."
+      },
+      {
+        id: 23,
+        category: "Agile Software Engineering",
+        question: "How is the role of the ScrumMaster defined in standard Scrum?",
+        options: [
+          "A top-down conventional manager who hires and fires developers.",
+          "A customer representative who decides product feature pricing.",
+          "A team coach and Scrum expert who guides effective use of Scrum and removes impediments.",
+          "A lead designer responsible for writing all database schemas."
+        ],
+        answer: 2,
+        explanation: "The ScrumMaster is a team coach and Scrum expert who guides the team in applying Scrum practices."
+      },
+      {
+        id: 24,
+        category: "Agile Software Engineering",
+        question: "What does 'Velocity' measure in Scrum?",
+        options: [
+          "The internet network speed of the development servers.",
+          "The clock rate of automated unit test execution scripts.",
+          "The time taken to conduct daily stand-up meetings.",
+          "An estimate of how much work a development team can complete in a single sprint."
+        ],
+        answer: 3,
+        explanation: "Velocity estimates the amount of backlog work (e.g., story points) a team completes during one sprint."
+      },
+      {
+        id: 25,
+        category: "Agile Software Engineering",
+        question: "What is meant by a 'Potentially Shippable Product Increment'?",
+        options: [
+          "Software that is fully developed, tested, and of high enough quality to be deployed directly to customers.",
+          "An incomplete code prototype requiring 3 extra months of bug fixing.",
+          "A text document outlining architectural design options.",
+          "A raw set of uncompiled source code files."
+        ],
+        answer: 0,
+        explanation: "A potentially shippable increment is clean, tested, high-quality working software ready for deployment."
+      },
+      {
+        id: 26,
+        category: "Agile Software Engineering",
+        question: "According to Figure 2.4, how does Scrum handle 'Unstable Requirements'?",
+        options: [
+          "Unstable requirements halt development until plans are finalized.",
+          "Unstable requirements do not hold up progress because development is done in short increments.",
+          "Unstable requirements are automatically deleted from the backlog.",
+          "Unstable requirements increase contractual penalty costs."
+        ],
+        answer: 1,
+        explanation: "Scrum benefits state that unstable requirements do not hold up progress due to incremental timeboxed iterations."
+      },
+      {
+        id: 27,
+        category: "Agile Software Engineering",
+        question: "When is a Product Backlog Item (PBI) in the state 'Ready for Implementation'?",
+        options: [
+          "When it is a high-level tentative idea that may be discarded.",
+          "When the team agrees it is important but requires further refinement.",
+          "When there is enough detail for the team to estimate effort, identify dependencies, and begin implementation.",
+          "When it has passed acceptance testing in production."
+        ],
+        answer: 2,
+        explanation: "'Ready for implementation' means details are clear, effort can be estimated, dependencies are known, and work can start."
+      },
+      {
+        id: 28,
+        category: "Agile Software Engineering",
+        question: "What occurs during the 'Refinement' activity of Product Backlog management?",
+        options: [
+          "All developers are replaced by external security consultants.",
+          "The system is deployed directly to end-users.",
+          "The sprint duration is extended by two weeks.",
+          "Existing PBIs are analyzed and broken down into more detailed, actionable backlog items."
+        ],
+        answer: 3,
+        explanation: "Refinement involves analyzing and breaking down higher-level PBIs into detailed, smaller items."
+      },
+      {
+        id: 29,
+        category: "Agile Software Engineering",
+        question: "How are 'Story Points' estimated in agile projects?",
+        options: [
+          "Relatively, by agreeing on a baseline task and comparing other tasks against it taking size, complexity, and unknown risks into account.",
+          "By strictly converting elapsed calendar clock hours into person-days.",
+          "By counting the exact lines of code required for each feature.",
+          "By calculating the financial salary cost per developer per hour."
+        ],
+        answer: 0,
+        explanation: "Story points are relative estimates comparing task effort/complexity against an agreed baseline task."
+      },
+      {
+        id: 30,
+        category: "Agile Software Engineering",
+        question: "What happens when a Timeboxed Sprint reaches its end date but some sprint backlog items are incomplete?",
+        options: [
+          "The sprint time is extended until all work is finished.",
+          "Development stops immediately; incomplete items are returned to the product backlog for re-prioritization.",
+          "The incomplete code is shipped to customers regardless of bugs.",
+          "The ScrumMaster cancels the entire software project."
+        ],
+        answer: 1,
+        explanation: "Sprints are strictly timeboxed. Work stops at the end date, and unfinished items return to the product backlog."
+      },
+      {
+        id: 31,
+        category: "Agile Software Engineering",
+        question: "What key benefit does timeboxing provide regarding problem discovery?",
+        options: [
+          "It eliminates the need to perform integration testing.",
+          "It prevents customers from requesting any feature changes.",
+          "If errors or omissions are discovered, the required rework is strictly limited to the duration of a sprint.",
+          "It guarantees 100% bug-free software delivery."
+        ],
+        answer: 2,
+        explanation: "Timeboxing limits rework impact—if errors occur, wasted effort is bounded within the short sprint duration."
+      },
+      {
+        id: 32,
+        category: "Agile Software Engineering",
+        question: "How long should Sprint Planning typically last at the beginning of a sprint?",
+        options: [
+          "No more than half the total duration of the sprint.",
+          "Three full working weeks.",
+          "Exactly ten minutes during daily stand-up.",
+          "No more than a single day."
+        ],
+        answer: 3,
+        explanation: "Sprint planning is a short activity taking no more than one day at the start of a sprint."
+      },
+      {
+        id: 33,
+        category: "Agile Software Engineering",
+        question: "What is the primary output of the Sprint Planning activity?",
+        options: [
+          "A Sprint Backlog, showing the detailed breakdown of PBIs selected for that sprint.",
+          "A formal 100-page SRS contract document.",
+          "A fully completed software system ready for release.",
+          "A set of reviewed employee vacation schedules."
+        ],
+        answer: 0,
+        explanation: "Sprint planning produces the Sprint Backlog—the set of PBIs chosen for the sprint broken down into tasks."
+      },
+      {
+        id: 34,
+        category: "Agile Software Engineering",
+        question: "Which of the following represents a 'Performance and Reliability' Sprint Goal?",
+        options: [
+          "Implement user roles so that a user can select their role when logging in.",
+          "Ensure login response time is less than 10 seconds for up to 2000 simultaneous connections.",
+          "Develop analytics that track user time spent on features.",
+          "Refactor UI components to improve visual theme layout."
+        ],
+        answer: 1,
+        explanation: "Sub-10s response time under 2000 concurrent users is a classic Performance & Reliability sprint goal."
+      },
+      {
+        id: 35,
+        category: "Agile Software Engineering",
+        question: "Why are daily Scrum meetings often organized as 'stand-up' meetings?",
+        options: [
+          "To allow developers to perform physical exercise.",
+          "To test the ergonomic quality of office furniture.",
+          "To keep meetings short, focused, and dissuade long, unnecessary discussions.",
+          "To comply with government health regulations."
+        ],
+        answer: 2,
+        explanation: "Stand-up meetings prevent comfort and encourage short, focused daily coordination (around 15 minutes)."
+      },
+      {
+        id: 36,
+        category: "Agile Software Engineering",
+        question: "According to Ian Sommerville, which two technical practices should ALWAYS be used during a sprint?",
+        options: [
+          "Waterfall design and Manual testing",
+          "Big Design Upfront and Contract Negotiation",
+          "Single-developer isolation and Weekly documentation",
+          "Test automation and Continuous integration"
+        ],
+        answer: 3,
+        explanation: "Sommerville emphasizes Test Automation and Continuous Integration as essential sprint practices."
+      },
+      {
+        id: 37,
+        category: "Agile Software Engineering",
+        question: "In Table 2.9 (Code Completeness Checklist), what defines the 'Accepted' state of a PBI?",
+        options: [
+          "Acceptance tests have been run and the Product Owner or dev team confirmed the PBI is complete.",
+          "The code has been written by a developer without needing peer review.",
+          "The PBI is placed into the ready for refinement queue.",
+          "The developer estimated the PBI effort as 5 story points."
+        ],
+        answer: 0,
+        explanation: "'Accepted' means acceptance tests pass and the Product Owner/team confirms the item satisfies definition of done."
+      },
+      {
+        id: 38,
+        category: "Agile Software Engineering",
+        question: "Who has ultimate authority to decide whether the goal of a sprint has been achieved during Sprint Review?",
+        options: [
+          "The ScrumMaster",
+          "The Product Owner",
+          "The Lead System Architect",
+          "The External Database Vendor"
+        ],
+        answer: 1,
+        explanation: "The Product Owner has ultimate authority to decide if sprint goals are met and items are complete."
+      },
+      {
+        id: 39,
+        category: "Agile Software Engineering",
+        question: "What is the recommended ideal team size for a Scrum development team?",
+        options: [
+          "1 to 3 people",
+          "15 to 25 people",
+          "5 to 8 people",
+          "50+ people"
+        ],
+        answer: 2,
+        explanation: "Scrum specifies small, self-organizing dev teams of 5 to 8 people for optimal communication."
+      },
+      {
+        id: 40,
+        category: "Agile Software Engineering",
+        question: "How do self-organizing teams effectively cope with team members joining or leaving?",
+        options: [
+          "By freezing development until new hiring is complete.",
+          "By assigning all project responsibilities to the ScrumMaster.",
+          "By rewriting the product architecture from scratch.",
+          "Because the team as a whole takes responsibility for the work and members share domain knowledge."
+        ],
+        answer: 3,
+        explanation: "Collective team responsibility and shared knowledge enable self-organizing teams to absorb turnover smoothly."
+      },
+      {
+        id: 41,
+        category: "Agile Software Engineering",
+        question: "Which real-world condition violates Scrum’s theoretical assumption about co-located team coordination?",
+        options: [
+          "Team members work part-time, flexible hours, or across different geographic locations.",
+          "Team members hold daily 15-minute stand-up meetings.",
+          "The Product Owner prioritizes items in a product backlog.",
+          "Sprints have fixed timeboxed durations of 2 to 4 weeks."
+        ],
+        answer: 0,
+        explanation: "Scrum assumes full-time, co-located teams, which fails when members work remotely, part-time, or across time zones."
+      },
+      {
+        id: 42,
+        category: "Agile Software Engineering",
+        question: "How are external interactions managed in Scrum to protect development momentum?",
+        options: [
+          "Every developer meets daily with external corporate managers.",
+          "ScrumMaster handles team-focused external interactions; Product Owner handles product-focused external interactions.",
+          "External interactions are completely prohibited until project closure.",
+          "Developers rotate daily to act as external public relations officers."
+        ],
+        answer: 1,
+        explanation: "Scrum shields developers: ScrumMaster handles team/management interactions, Product Owner handles customer/product interactions."
+      },
+      {
+        id: 43,
+        category: "Agile Software Engineering",
+        question: "Why does the ScrumMaster often absorb project management responsibilities in many companies?",
+        options: [
+          "Because Scrum rules strictly require the ScrumMaster to approve employee salary raises.",
+          "Because developers are forbidden from writing any code without project management licenses.",
+          "Because they know the ongoing work best and are in the best position to report progress to company management.",
+          "Because Product Owners are not allowed to talk to company management."
+        ],
+        answer: 2,
+        explanation: "In practice, ScrumMasters take on PM duties because they are closest to daily progress and team workflow."
+      },
+      {
+        id: 44,
+        category: "Software Engineering Fundamentals",
+        question: "In real-world software engineering projects, approximately what percentage of effort is spent on actual coding?",
+        options: [
+          "90%",
+          "75%",
+          "50%",
+          "Around 20%"
+        ],
+        answer: 3,
+        explanation: "Coding accounts for only ~20% of software engineering effort; the remaining ~80% involves requirements, design, testing, PM, and maintenance."
+      },
+      {
+        id: 45,
+        category: "Software Engineering Fundamentals",
+        question: "What is the core definition of Software Verification?",
+        options: [
+          "Checking whether the developed program conforms to its specified requirements.",
+          "Confirming whether the system meets the ultimate implicit wishes of end-users.",
+          "Calculating the financial return on investment of a software release.",
+          "Converting user stories into visual UML class diagrams."
+        ],
+        answer: 0,
+        explanation: "Verification asks: 'Are we building the product right?' (conforming to specifications). Validation asks: 'Are we building the right product?'"
+      },
+      {
+        id: 46,
+        category: "Software Engineering Fundamentals",
+        question: "How does White-box testing differ from Black-box testing?",
+        options: [
+          "White-box tests user interfaces; Black-box tests hardware memory chips.",
+          "White-box examines internal code structure and execution paths; Black-box tests functional behavior without internal code knowledge.",
+          "White-box is performed exclusively by customers; Black-box is performed by automated tools.",
+          "There is no difference; both terms describe manual acceptance testing."
+        ],
+        answer: 1,
+        explanation: "White-box inspects internal logic/paths; Black-box tests external input/output behavior without looking at code."
+      },
+      {
+        id: 47,
+        category: "Software Engineering Fundamentals",
+        question: "What is the primary objective of Regression Testing?",
+        options: [
+          "To test system performance under extreme server overload.",
+          "To evaluate user satisfaction with UI color themes.",
+          "To verify that recent code changes have not broken existing, previously working functionality.",
+          "To generate initial cost estimates for upcoming sprint planning."
+        ],
+        answer: 2,
+        explanation: "Regression testing re-runs previous tests to ensure new changes didn't introduce bugs into existing features."
+      },
+      {
+        id: 48,
+        category: "Software Engineering Fundamentals",
+        question: "What distinguishes Stress Testing from Load Testing?",
+        options: [
+          "Stress testing evaluates human developer fatigue levels.",
+          "Load testing tests offline systems; Stress testing tests online cloud systems.",
+          "Load testing measures execution speed; Stress testing measures code lines.",
+          "Load testing tests system performance under expected heavy load; Stress testing pushes the system beyond operational limits to test failure recovery."
+        ],
+        answer: 3,
+        explanation: "Load testing checks performance under expected high volume; Stress testing pushes beyond limits to observe crash behavior."
+      },
+      {
+        id: 49,
+        category: "Software Engineering Fundamentals",
+        question: "What is the correct sequential order of activities in the Software Testing Process?",
+        options: [
+          "Test Planning → Test Development → Test Execution → Test Reporting → Retesting Defects",
+          "Test Execution → Test Planning → Retesting Defects → Test Development → Test Reporting",
+          "Test Reporting → Test Execution → Test Planning → Test Development → Retesting Defects",
+          "Retesting Defects → Test Execution → Test Development → Test Planning → Test Reporting"
+        ],
+        answer: 0,
+        explanation: "Standard testing sequence: Plan strategy → Develop test cases → Execute tests → Report defects → Retest fixes."
+      },
+      {
+        id: 50,
+        category: "Software Engineering Fundamentals",
+        question: "Which testing artifact defines specific inputs, execution conditions, and expected results for testing a single function?",
+        options: [
+          "Test Strategy Document",
+          "Test Case",
+          "Gantt Chart",
+          "User Persona"
+        ],
+        answer: 1,
+        explanation: "A Test Case provides precise inputs, steps, and expected outputs to verify a single specific function."
+      },
+      {
+        id: 51,
+        category: "Software Engineering Fundamentals",
+        question: "In the Project Management Triple Constraint, what factor sits at the center, governed by Scope, Time, and Cost?",
+        options: [
+          "Velocity",
+          "Refactoring",
+          "Quality",
+          "Prototyping"
+        ],
+        answer: 2,
+        explanation: "The Triple Constraint balances Scope, Time, and Cost, with Quality at the core reflecting overall success."
+      },
+      {
+        id: 52,
+        category: "Software Engineering Fundamentals",
+        question: "Software Project Management involves which three continuous managerial actions?",
+        options: [
+          "Coding, Compiling, and Executing",
+          "Designing, Refactoring, and Shipping",
+          "Negotiating, Contracting, and Subcontracting",
+          "Planning, Monitoring, and Controlling"
+        ],
+        answer: 3,
+        explanation: "Project management consists of Planning (setting targets), Monitoring (tracking progress), and Controlling (taking corrective action)."
+      },
+      {
+        id: 53,
+        category: "Software Engineering Fundamentals",
+        question: "Which visual project management tool displays tasks against calendar dates showing dependencies and milestones?",
+        options: [
+          "Gantt Chart",
+          "UML Class Diagram",
+          "Story Point Matrix",
+          "Use Case Diagram"
+        ],
+        answer: 0,
+        explanation: "Gantt Charts visually plot project task schedules, durations, dependencies, and milestones over calendar time."
+      },
+      {
+        id: 54,
+        category: "Software Engineering Fundamentals",
+        question: "Which sequence correctly reflects the classic Waterfall development model stages?",
+        options: [
+          "Testing → Requirements → Design → Implementation → Maintenance",
+          "Software Requirements → Software Design → Implementation (Coding) → Verification (Testing) → Operation (Maintenance)",
+          "Coding → Design → Requirements → Operation → Verification",
+          "Maintenance → Verification → Coding → Design → Requirements"
+        ],
+        answer: 1,
+        explanation: "Waterfall sequence: Requirements → Design → Implementation → Verification → Operation."
+      },
+      {
+        id: 55,
+        category: "Software Engineering Fundamentals",
+        question: "What core value of the Agile Spirit prioritizes adapting to market feedback over rigid adherence to initial documents?",
+        options: [
+          "Following a plan over customer collaboration",
+          "Comprehensive documentation over working software",
+          "Responding to change over following a plan",
+          "Contract negotiation over human interactions"
+        ],
+        answer: 2,
+        explanation: "Agile values 'Responding to change over following a plan' to stay adaptive."
+      },
+      {
+        id: 56,
+        category: "Agile Software Engineering",
+        question: "In Extreme Programming (XP), what is the correct cycle for releasing software features?",
+        options: [
+          "Write documentation → Wait 1 year → Deploy system",
+          "Create SRS → Design UML → Code for 6 months → Test once",
+          "Freeze requirements → Ignore customer → Run stress tests → Archive source code",
+          "Select user stories → Break down to tasks → Plan release → Develop/integrate/test → Release software → Evaluate system"
+        ],
+        answer: 3,
+        explanation: "XP release cycle: Select stories → Break into tasks → Plan release → Develop/Integrate/Test → Release → Evaluate."
+      },
+      {
+        id: 57,
+        category: "Agile Software Engineering",
+        question: "Scrum development consists of three main phases. Which phase involves Sprint Cycles?",
+        options: [
+          "The middle iterative phase where sprint cycles develop increments of the system.",
+          "The initial planning phase focused solely on legal contracts.",
+          "The project closure phase dedicated to user manual printing.",
+          "The hardware procurement phase."
+        ],
+        answer: 0,
+        explanation: "Scrum has 3 phases: Initial outline planning → Iterative Sprint Cycles → Project closure."
+      },
+      {
+        id: 58,
+        category: "Software Products",
+        question: "What primary mechanism drives feature selection in Generic Software Product development?",
+        options: [
+          "Direct legally binding instructions from a single buyer.",
+          "Market research conducted by the software vendor identifying common needs.",
+          "Arbitrary decisions by junior software trainees.",
+          "Government mandate directives."
+        ],
+        answer: 1,
+        explanation: "Generic products rely on market research by the vendor to identify common customer requirements."
+      },
+      {
+        id: 59,
+        category: "Software Products",
+        question: "Custom software systems typically have an expected operational lifespan of how long?",
+        options: [
+          "2 to 4 weeks",
+          "6 months maximum",
+          "10 years or more",
+          "Exactly 100 days"
+        ],
+        answer: 2,
+        explanation: "Customized business systems represent major investments and operate for long lifespans (10+ years)."
+      },
+      {
+        id: 60,
+        category: "Software Products",
+        question: "In Figure 1.2 (Product Software Engineering), who owns and controls the Opportunity, Product Features, and Software elements?",
+        options: [
+          "The External Customer",
+          "The Government Auditor",
+          "The Database Contractor",
+          "The Developer / Software Company"
+        ],
+        answer: 3,
+        explanation: "In product software engineering, the DEVELOPER owns all three elements: Opportunity, Features, and Software."
+      },
+      {
+        id: 61,
+        category: "Software Products",
+        question: "What is the key architectural feature of a Software Product Line?",
+        options: [
+          "A common core software codebase shared across multiple customer-specific variants.",
+          "A collection of completely unrelated software products bound under one brand name.",
+          "A single mobile app that cannot be customized.",
+          "A hardware rack system used exclusively for data backup."
+        ],
+        answer: 0,
+        explanation: "Software Product Lines share a common core architecture adapted for specific customer variants."
+      },
+      {
+        id: 62,
+        category: "Software Products",
+        question: "In the Hybrid software execution model, what role do the vendor's servers play?",
+        options: [
+          "They only send update patches once per year.",
+          "They provide additional functionality, user data backups, and remote services alongside local client processing.",
+          "They store zero user data and run no software logic.",
+          "They host the complete UI while the client machine processes all core logic."
+        ],
+        answer: 1,
+        explanation: "In Hybrid execution, client devices run UI/partial features while vendor servers provide extra processing, backups, and updates."
+      },
+      {
+        id: 63,
+        category: "Software Products",
+        question: "In Moore's Product Vision template, what does the 'FOR' clause define?",
+        options: [
+          "The programming language chosen for development.",
+          "The estimated financial budget.",
+          "The target customer or market segment.",
+          "The automated unit testing framework."
+        ],
+        answer: 2,
+        explanation: "'FOR [target customer]' defines the specific audience or user group targeted by the product."
+      },
+      {
+        id: 64,
+        category: "Software Products",
+        question: "When Product Managers engage in 'Customer Testing', what are they attempting to evaluate?",
+        options: [
+          "The speed of server CPU microprocessors.",
+          "The legal contract penalties for late delivery.",
+          "The exact lines of code written by developers.",
+          "Customer feedback regarding feature usefulness, usability, and business value."
+        ],
+        answer: 3,
+        explanation: "Customer testing collects feedback on real-world usability, feature value, and user satisfaction."
+      },
+      {
+        id: 65,
+        category: "Software Products",
+        question: "What is the focus of the 'Customer Demonstration' phase in two-stage prototyping?",
+        options: [
+          "Extending feasibility prototypes with custom feature ideas to validate user scenarios and requirements.",
+          "Selling raw source code directly to external competitors.",
+          "Writing formal employee performance appraisals.",
+          "Benchmarking database connection latency."
+        ],
+        answer: 0,
+        explanation: "Customer demonstration prototypes build on feasibility demos to test user scenarios and customer-specific feature ideas."
+      },
+      {
+        id: 66,
+        category: "Agile Software Engineering",
+        question: "What does the Agile principle 'Maintain Simplicity' encourage?",
+        options: [
+          "Writing simple text files instead of functional code.",
+          "Focusing on simplicity in both the software built and the development process, eliminating unnecessary complexity.",
+          "Limiting development teams to a single programmer.",
+          "Eliminating all quality assurance and testing activities."
+        ],
+        answer: 1,
+        explanation: "'Maintain Simplicity' emphasizes doing the simplest thing that works in both system design and process."
+      },
+      {
+        id: 67,
+        category: "Agile Software Engineering",
+        question: "The Agile principle 'Focus on people, not things' implies that:",
+        options: [
+          "Development teams should be trusted and empowered to develop their own ways of working without rigid process constraints.",
+          "Tools and compilers are completely unnecessary in software development.",
+          "Project managers must closely monitor every keystroke of developers.",
+          "Processes should be enforced uniformly across all companies worldwide."
+        ],
+        answer: 0,
+        explanation: "Agile trusts people over rigid process, empowering teams to adapt their working styles."
+      },
+      {
+        id: 68,
+        category: "Agile Software Engineering",
+        question: "What is Pair Programming in Extreme Programming (XP)?",
+        options: [
+          "Two managers writing weekly progress reports together.",
+          "Two separate development companies bidding on the same contract.",
+          "Two customers testing the software simultaneously on different screens.",
+          "Two developers working together at one workstation, continuously reviewing code as it is written."
+        ],
+        answer: 3,
+        explanation: "Pair programming involves two developers working together at one screen, one writing code while the other reviews in real time."
+      },
+      {
+        id: 69,
+        category: "Agile Software Engineering",
+        question: "What role does an 'On-site Customer' play in XP?",
+        options: [
+          "A customer representative is available full-time to the dev team to clarify requirements, answer questions, and provide immediate feedback.",
+          "A customer representative inspects developer attendance logs every morning.",
+          "A customer representative takes over lead programming tasks.",
+          "A customer representative handles software deployment server hardware."
+        ],
+        answer: 0,
+        explanation: "An on-site customer works directly with the team to provide real-time domain answers and feedback."
+      },
+      {
+        id: 70,
+        category: "Agile Software Engineering",
+        question: "What does 'Sustainable Pace' mean in XP practices?",
+        options: [
+          "Working 80-hour workweeks continuously until project launch.",
+          "Maintaining a steady, manageable work pace (avoiding burnout overtime) so the team can maintain high quality indefinitely.",
+          "Slowing down coding speed to 1 line per day.",
+          "Pausing all development for three months after every sprint."
+        ],
+        answer: 1,
+        explanation: "Sustainable pace avoids excessive overtime, ensuring developers remain productive, healthy, and focused."
+      },
+      {
+        id: 71,
+        category: "Agile Software Engineering",
+        question: "Which of the following is NOT a typical category of Product Backlog Item (PBI)?",
+        options: [
+          "User Features",
+          "Engineering Improvements",
+          "Developer Salary Adjustment Requests",
+          "Development Activities"
+        ],
+        answer: 2,
+        explanation: "PBIs include features, user requests, development tasks, and tech improvements—not administrative salary requests."
+      },
+      {
+        id: 72,
+        category: "Agile Software Engineering",
+        question: "'Refactor user interface code to improve performance' is an example of what type of PBI?",
+        options: [
+          "User Feature",
+          "User Request",
+          "Development Activity",
+          "Engineering Improvement"
+        ],
+        answer: 3,
+        explanation: "Refactoring code to enhance maintainability/performance is a classic Engineering Improvement PBI."
+      },
+      {
+        id: 73,
+        category: "Agile Software Engineering",
+        question: "In PBI state classification (Table 2.7), what defines 'Ready for Refinement'?",
+        options: [
+          "The team agrees it is an important item with a clear overall concept, but further work is needed to understand details.",
+          "It is a tentative idea that may be completely discarded.",
+          "It has complete details, effort estimates, and is ready for immediate sprint assignment.",
+          "It has been deployed to production."
+        ],
+        answer: 0,
+        explanation: "'Ready for refinement' means the item is approved as important, but needs breakdown and detail clarification."
+      },
+      {
+        id: 74,
+        category: "Agile Software Engineering",
+        question: "What defines a PBI in the 'Ready for Consideration' state?",
+        options: [
+          "A fully unit-tested component.",
+          "A tentative high-level idea or feature description under evaluation that may change radically or be dropped.",
+          "An item assigned to the current sprint backlog.",
+          "An item whose story points are officially locked."
+        ],
+        answer: 1,
+        explanation: "'Ready for consideration' items are tentative concepts that may be accepted, altered, or rejected."
+      },
+      {
+        id: 75,
+        category: "Agile Software Engineering",
+        question: "Why is estimated effort in 'person-hours' different from 'calendar time'?",
+        options: [
+          "Person-hours measure clock speed; calendar time measures memory storage.",
+          "Calendar time is always shorter than person-hours for a single developer.",
+          "Multiple people working concurrently can shorten calendar time, whereas person-hours measure total cumulative work effort.",
+          "Person-hours include weekend vacation hours automatically."
+        ],
+        answer: 2,
+        explanation: "Person-hours represent total work effort; if 2 people work on a 10 person-hour task, calendar time can be reduced to ~5 hours."
+      },
+      {
+        id: 76,
+        category: "Agile Software Engineering",
+        question: "What is a major benefit of delivering a demonstrable software increment at the end of every timeboxed sprint?",
+        options: [
+          "It eliminates the need for source code repositories.",
+          "It guarantees that no further sprints will be required.",
+          "It proves to stakeholders that tangible progress is being made on a regular schedule.",
+          "It allows developers to skip integration testing."
+        ],
+        answer: 3,
+        explanation: "Demonstrable progress provides visible, working proof of development advances to stakeholders every sprint."
+      },
+      {
+        id: 77,
+        category: "Agile Software Engineering",
+        question: "What inputs are most critical for the team during Sprint Planning when selecting PBIs?",
+        options: [
+          "PBI effort estimates and team velocity.",
+          "Historical employee attendance logs.",
+          "Marketing budget expenditure spreadsheets.",
+          "Hardware server purchase invoices."
+        ],
+        answer: 0,
+        explanation: "Sprint planning relies on PBI effort estimates and team velocity to select an achievable workload."
+      },
+      {
+        id: 78,
+        category: "Agile Software Engineering",
+        question: "Which of the following is an example of a 'Functional' Sprint Goal?",
+        options: [
+          "Ensure database queries respond in under 50 milliseconds.",
+          "Implement user role selection during login.",
+          "Develop analytics to track user feature usage duration.",
+          "Migrate server infrastructure to an open-source OS."
+        ],
+        answer: 1,
+        explanation: "Implementing role selection during login adds a direct functional capability to the system."
+      },
+      {
+        id: 79,
+        category: "Agile Software Engineering",
+        question: "Which of the following is an example of a 'Support' Sprint Goal?",
+        options: [
+          "Refactor database indexing schemas.",
+          "Enforce SSL encryption for password inputs.",
+          "Develop analytics that maintain information about user time spent on features.",
+          "Add user profile picture upload capabilities."
+        ],
+        answer: 2,
+        explanation: "Developing analytics to track usage features supports system monitoring and product usage insight."
+      },
+      {
+        id: 80,
+        category: "Agile Software Engineering",
+        question: "Under the Code Completeness Checklist (Table 37), what does 'Unit Tested' signify?",
+        options: [
+          "Code has been read by an external auditor.",
+          "Code has been deployed to client workstations.",
+          "The Product Owner approved the UI layout.",
+          "All automated unit tests have executed successfully without failures."
+        ],
+        answer: 3,
+        explanation: "'Unit Tested' requires that all automated unit test scripts run and pass successfully."
+      },
+      {
+        id: 81,
+        category: "Agile Software Engineering",
+        question: "What does the 'Integrated' checklist item require before code is marked complete?",
+        options: [
+          "The code is merged into the project codebase and no integration errors occur.",
+          "The code is translated into five international languages.",
+          "The ScrumMaster signs a formal contract extension.",
+          "All user stories are converted into manual test scripts."
+        ],
+        answer: 0,
+        explanation: "'Integrated' means code is merged into the main project repository without integration conflicts or build breaks."
+      },
+      {
+        id: 82,
+        category: "Agile Software Engineering",
+        question: "What takes place during the 'Process Review' portion of a Sprint Review / Retrospective?",
+        options: [
+          "The team negotiates new salary bonuses with executive managers.",
+          "The team reflects on its own working practices and Scrum implementation to identify operational improvements.",
+          "The team rewrites all customer contracts.",
+          "The team deletes all completed source code files."
+        ],
+        answer: 1,
+        explanation: "Process review (Retrospective) allows the team to reflect on team dynamics and process effectiveness to continuously improve."
+      },
+      {
+        id: 83,
+        category: "Agile Software Engineering",
+        question: "Why is rotating project management responsibilities among different team members usually impractical?",
+        options: [
+          "Because Scrum rules forbid developers from speaking to each other.",
+          "Because project management software licenses cannot be transferred.",
+          "Because external stakeholders require continuous, consistent communication with a single contact point.",
+          "Because developers do not know how to send emails."
+        ],
+        answer: 2,
+        explanation: "Continuity of external communication with management/clients requires a consistent person rather than constantly rotating representatives."
+      },
+      {
+        id: 84,
+        category: "Agile Software Engineering",
+        question: "According to Figure 2.11, which items fall under the 'Reporting' responsibilities of project management?",
+        options: [
+          "Vacations, Absence, and Hiring",
+          "Finance, Compliance, and Procurement",
+          "Unit Testing, Refactoring, and Pair Programming",
+          "Budget, Schedule, Risks, Problems, and Progress"
+        ],
+        answer: 3,
+        explanation: "Reporting covers tracking and communicating Budget, Schedule, Risks, Problems, and Progress to corporate leadership."
+      },
+      {
+        id: 85,
+        category: "Agile Software Engineering",
+        question: "Which items fall under the 'Administration' responsibilities of project management (Figure 2.11)?",
+        options: [
+          "Finance, Compliance, Procurement, and External Liaison",
+          "Budget, Schedule, and Velocity",
+          "Vacations, Work Quality, and Hiring",
+          "Automated Testing and Code Review"
+        ],
+        answer: 0,
+        explanation: "Administration covers corporate governance: Finance, Compliance, Procurement, and Liaison."
+      },
+      {
+        id: 86,
+        category: "Agile Software Engineering",
+        question: "Which items fall under the 'People' responsibilities of project management (Figure 2.11)?",
+        options: [
+          "Budget, Risks, and Progress",
+          "Vacations, Absence, Work Quality, Performance Reviewing, and Hiring",
+          "Procurement and Compliance",
+          "Sprint Backlog Prioritization"
+        ],
+        answer: 1,
+        explanation: "People management encompasses Vacations, Absence tracking, Work Quality, Performance Reviews, and Hiring."
+      },
+      {
+        id: 87,
+        category: "Software Engineering Fundamentals",
+        question: "Software Engineering is defined as an engineering discipline that provides:",
+        options: [
+          "Only hardware wiring specifications.",
+          "Exclusively legal advice for software patenting.",
+          "Knowledge, tools, and methods for all aspects of software production across its lifecycle.",
+          "A set of rigid rules forbidding software updates."
+        ],
+        answer: 2,
+        explanation: "Software Engineering provides the knowledge, tools, and methods to engineer software across its entire lifecycle."
+      },
+      {
+        id: 88,
+        category: "Software Engineering Fundamentals",
+        question: "Which of the following lists key activities included in software engineering?",
+        options: [
+          "Marketing, Accounting, Hardware Manufacturing, Sales",
+          "Requirements Definition, Software Design, Construction, Modelling, Testing, Maintenance, Project Management",
+          "Bricklaying, Wiring, Plumbing, Assembly",
+          "Printing, Binding, Packaging, Shipping"
+        ],
+        answer: 1,
+        explanation: "Core SE activities encompass Requirements, Design, Construction, Modelling, Testing, Maintenance, and PM."
+      },
+      {
+        id: 89,
+        category: "Software Engineering Fundamentals",
+        question: "What is a crucial characteristic of how software development activities interact in practice?",
+        options: [
+          "They overlap and interact dynamically rather than following a strict linear sequence.",
+          "They must always be executed in strict non-overlapping sequence.",
+          "Testing must strictly complete before requirements analysis can begin.",
+          "Maintenance occurs before software design."
+        ],
+        answer: 0,
+        explanation: "Software activities are non-linear; they continuously overlap, iterate, and interact throughout development."
+      },
+      {
+        id: 90,
+        category: "Software Engineering Fundamentals",
+        question: "What fundamental rule governs the definition of Software Requirements?",
+        options: [
+          "Requirements must specify 'HOW' to write the source code.",
+          "Requirements must answer 'WHAT' the system should do, not 'HOW' it will be implemented.",
+          "Requirements must be written exclusively in binary C++ code.",
+          "Requirements cannot be modified once written."
+        ],
+        answer: 1,
+        explanation: "A core principle of requirements engineering: define WHAT the system must do, not HOW technically to implement it."
+      },
+      {
+        id: 91,
+        category: "Software Engineering Fundamentals",
+        question: "How do Functional requirements differ from Non-Functional requirements?",
+        options: [
+          "Functional requirements are optional; Non-functional requirements are mandatory.",
+          "Functional requirements describe non-technical developer salaries; Non-functional describe customer names.",
+          "Functional requirements describe specific system services/features; Non-functional describe quality attributes, constraints, and operational properties.",
+          "Functional requirements are written in UML; Non-functional are written in HTML."
+        ],
+        answer: 2,
+        explanation: "Functional requirements define specific system features/behaviors; Non-functional define quality attributes (performance, security, scalability)."
+      },
+      {
+        id: 92,
+        category: "Software Engineering Fundamentals",
+        question: "What common reality complicates the Requirements Analysis phase?",
+        options: [
+          "Software compilers refuse to compile user requirements.",
+          "Customers always possess complete, perfect technical knowledge of their needs.",
+          "Developers prefer writing documentation over coding.",
+          "Customers often do not know exactly what they need at the beginning of a project."
+        ],
+        answer: 3,
+        explanation: "A major challenge in SE is that customers rarely know their exact requirements upfront, necessitating iterative discovery."
+      },
+      {
+        id: 93,
+        category: "Software Engineering Fundamentals",
+        question: "What is the Software Requirements Specification (SRS)?",
+        options: [
+          "A formal document that provides an agreed, detailed description of system functional and non-functional requirements.",
+          "An executable binary program installed on servers.",
+          "A list of employee payroll numbers.",
+          "A graphic illustration of server hardware wiring."
+        ],
+        answer: 0,
+        explanation: "The SRS is the official document detailing all functional (Use Cases) and non-functional requirements for the software."
+      },
+      {
+        id: 94,
+        category: "Software Engineering Fundamentals",
+        question: "What does System Architecture define?",
+        options: [
+          "The visual color scheme of mobile app buttons.",
+          "The high-level structure of the system, including subsystems/modules, their responsibilities, interactions, and technology platforms.",
+          "The clock speed of end-user laptop processors.",
+          "The hourly wage rate of database administrators."
+        ],
+        answer: 1,
+        explanation: "System Architecture defines high-level structural decomposition into subsystems, their responsibilities, interactions, and tech platforms."
+      },
+      {
+        id: 95,
+        category: "Software Engineering Fundamentals",
+        question: "How does Software Design relate to System Architecture?",
+        options: [
+          "Software Design is strictly focused on marketing; Architecture is focused on legal contracts.",
+          "Software Design precedes requirements analysis; Architecture follows testing.",
+          "Software Design provides the detailed technical specification of how system modules and components will implement the requirements established in the architecture.",
+          "There is no relationship between them."
+        ],
+        answer: 2,
+        explanation: "Architecture sets the macro-level structure; Software Design provides the detailed technical blueprint for components within that structure."
+      },
+      {
+        id: 96,
+        category: "Software Engineering Fundamentals",
+        question: "What does Component Design specify?",
+        options: [
+          "External market press releases.",
+          "Office building floor plan layouts.",
+          "Vendor license contract terms.",
+          "Internal module structures, including interfaces, data design, and process flows."
+        ],
+        answer: 3,
+        explanation: "Component design details internal module structures, interfaces, data design, and process workflows."
+      },
+      {
+        id: 97,
+        category: "Software Engineering Fundamentals",
+        question: "What is the focus of Object-Oriented Design (OOD)?",
+        options: [
+          "Identifying software classes, their responsibilities, relationships, dependencies, and interactions.",
+          "Structuring relational SQL database tables exclusively.",
+          "Writing assembly language instructions for microcontrollers.",
+          "Configuring physical network routers."
+        ],
+        answer: 0,
+        explanation: "OOD structures the system around objects and classes, defining their responsibilities, relationships, and interactions."
+      },
+      {
+        id: 98,
+        category: "Software Engineering Fundamentals",
+        question: "What is contained within a Software Design Document (SDD)?",
+        options: [
+          "Customer payment history records.",
+          "Formal descriptions of architecture, module process design (e.g. sequence diagrams), data design (E/R diagrams), and interface design (class diagrams).",
+          "Raw uncompiled code snippets without diagrams.",
+          "Marketing flyers for product distribution."
+        ],
+        answer: 1,
+        explanation: "An SDD contains architectural specs and detailed module models (Sequence diagrams for processes, E/R for data, Class diagrams for interfaces)."
+      },
+      {
+        id: 99,
+        category: "Software Engineering Fundamentals",
+        question: "Why can software verification NOT prove the complete absence of defects?",
+        options: [
+          "Because verification tools are illegal to use.",
+          "Because programming languages do not allow testing.",
+          "Because testing can only reveal the presence of defects, not certify their total absence.",
+          "Because verification is only conducted after project cancellation."
+        ],
+        answer: 2,
+        explanation: "As Edsger Dijkstra famously noted, testing and verification demonstrate the presence of bugs, but can never prove their total absence."
+      },
+      {
+        id: 100,
+        category: "Software Engineering Fundamentals",
+        question: "What is a fundamental difference between Waterfall project planning and Agile project planning?",
+        options: [
+          "Waterfall uses iterations; Agile uses 5-year plans.",
+          "Waterfall forbids documentation; Agile requires 500-page specifications.",
+          "Waterfall relies on automated unit tests; Agile relies strictly on manual checking.",
+          "Waterfall relies on long-term upfront sequential planning; Agile relies on short-term iterative planning via backlogs and sprints."
+        ],
+        answer: 3,
+        explanation: "Waterfall plans sequentially and rigidly upfront; Agile plans adaptively in short, iterative timeboxed cycles."
+      }
+    ];
 
-            // Topic 3: Hybrid TCP/IP-OSI Architecture (Q21 - Q32)
-            {
-                id: 21,
-                question: "What is a 'Standards Architecture'?",
-                options: [
-                    "A single monolithic protocol that handles all network tasks",
-                    "A broad plan that breaks the networking problem into smaller, modular layers for ease of development",
-                    "A hardware blueprint for manufacturing switches",
-                    "A legal agreement between internet service providers"
-                ],
-                correct: 1,
-                explanation: "A standards architecture is a broad modular plan dividing complex networking functionality into independent layers assigned to specialists."
-            },
-            {
-                id: 22,
-                question: "What is the dominant standards architecture used in networking today?",
-                options: [
-                    "Pure 7-Layer OSI Model",
-                    "Pure 4-Layer TCP/IP Model",
-                    "Hybrid TCP/IP-OSI Standards Architecture",
-                    "AppleTalk Architecture"
-                ],
-                correct: 2,
-                explanation: "Modern networking relies on the 5-Layer Hybrid TCP/IP-OSI architecture, blending TCP/IP standards at upper layers with OSI at lower layers."
-            },
-            {
-                id: 23,
-                question: "What is the correct order of layers in the 5-Layer Hybrid TCP/IP-OSI model, from Layer 5 down to Layer 1?",
-                options: [
-                    "Application, Internet, Transport, Data Link, Physical",
-                    "Application, Transport, Internet, Data Link, Physical",
-                    "Physical, Data Link, Internet, Transport, Application",
-                    "Session, Presentation, Application, Transport, Network"
-                ],
-                correct: 1,
-                explanation: "The 5 layers are Layer 5 (Application), Layer 4 (Transport), Layer 3 (Internet), Layer 2 (Data Link), and Layer 1 (Physical)."
-            },
-            {
-                id: 24,
-                question: "Which standards organization created the OSI (Open Systems Interconnection) architecture?",
-                options: [
-                    "IETF (Internet Engineering Task Force)",
-                    "ISO (International Organization for Standardization) & ITU-T",
-                    "IEEE (Institute of Electrical and Electronics Engineers)",
-                    "W3C (World Wide Web Consortium)"
-                ],
-                correct: 1,
-                explanation: "The OSI architecture was created by ISO and ITU-T, whereas TCP/IP was created by the IETF."
-            },
-            {
-                id: 25,
-                question: "Which standards organization creates TCP/IP internetworking standards?",
-                options: [
-                    "IETF (Internet Engineering Task Force)",
-                    "ISO",
-                    "IEEE",
-                    "ANSI"
-                ],
-                correct: 0,
-                explanation: "The IETF (Internet Engineering Task Force) sets standards for the TCP/IP architecture (Internet and Transport layers)."
-            },
-            {
-                id: 26,
-                question: "In the Hybrid TCP/IP-OSI architecture, which layers draw their standards from OSI?",
-                options: [
-                    "Layers 4 and 5",
-                    "Layers 3 and 4",
-                    "Layers 1 and 2 (Physical and Data Link)",
-                    "Layers 2 and 3"
-                ],
-                correct: 2,
-                explanation: "The Hybrid model uses OSI standards at Layer 1 (Physical) and Layer 2 (Data Link) for single-network communications (e.g., Ethernet, Wi-Fi)."
-            },
-            {
-                id: 27,
-                question: "In the Hybrid TCP/IP-OSI architecture, which layers draw their standards from TCP/IP?",
-                options: [
-                    "Layers 1 and 2",
-                    "Layers 3 and 4 (Internet and Transport)",
-                    "Layers 5 and 6",
-                    "Layers 2 and 3"
-                ],
-                correct: 1,
-                explanation: "The Hybrid model uses TCP/IP standards at Layer 3 (Internet) and Layer 4 (Transport) for cross-network internetworking."
-            },
-            {
-                id: 28,
-                question: "What is the primary purpose of Layer 5 (Application Layer)?",
-                options: [
-                    "Frame delivery across a single switched LAN",
-                    "Application-to-application communication and interoperability",
-                    "End-to-end packet error recovery",
-                    "Electrical bit representation on physical media"
-                ],
-                correct: 1,
-                explanation: "Layer 5 governs application-to-application communication, allowing software programs from different vendors to work together."
-            },
-            {
-                id: 29,
-                question: "What is the specific purpose of Layer 4 (Transport Layer)?",
-                options: [
-                    "Host-to-host communication and end-to-end error recovery/flow control",
-                    "Routing packets across multiple routers",
-                    "Switching frames between adjacent LAN switches",
-                    "Defining mechanical cable pinout standards"
-                ],
-                correct: 0,
-                explanation: "Layer 4 handles end-to-end host-to-host communication capabilities, including error recovery, retransmissions, and flow control."
-            },
-            {
-                id: 30,
-                question: "What is the core function of Layer 3 (Internet Layer)?",
-                options: [
-                    "Transmitting frames across a single wireless access point",
-                    "Carrying packets across an internet made of multiple networks via routers",
-                    "Formatting user text into HTML",
-                    "Connecting hardware interface ports with copper wire"
-                ],
-                correct: 1,
-                explanation: "Layer 3 governs packet transmission across an internet (routed networks connected by routers)."
-            },
-            {
-                id: 31,
-                question: "What is the core function of Layer 2 (Data Link Layer)?",
-                options: [
-                    "Routing packets across international internetworks",
-                    "Transmitting frames across a single switched or wireless network",
-                    "Managing end-to-end application sessions",
-                    "Generating light signals in fiber optic strands"
-                ],
-                correct: 1,
-                explanation: "Layer 2 governs frame delivery across a single switched/wireless LAN or WAN."
-            },
-            {
-                id: 32,
-                question: "What does Layer 1 (Physical Layer) govern?",
-                options: [
-                    "End-to-end reliable transmission",
-                    "Transmission of raw bits over a physical medium (cables, connectors, radio waves)",
-                    "Data packet formatting and logical IP addressing",
-                    "Web browser cookie processing"
-                ],
-                correct: 1,
-                explanation: "Layer 1 provides mechanical and electrical specifications to transmit digital data bits over physical media."
-            },
+    let currentQIndex = 0;
+    let userAnswers = new Array(quizData.length).fill(null);
 
-            // Topic 4: Links, Routes, and Data Links (Q33 - Q42)
-            {
-                id: 33,
-                question: "What is a 'Physical Link'?",
-                options: [
-                    "The entire path a packet takes across the Internet",
-                    "A connection between two directly adjacent devices (e.g., Host to Switch)",
-                    "The path a frame takes through an entire switched network",
-                    "A virtual circuit established by TCP"
-                ],
-                correct: 1,
-                explanation: "A physical link is the direct connection between two adjacent devices (e.g., host-to-switch, switch-to-switch, switch-to-router)."
-            },
-            {
-                id: 34,
-                question: "What is a 'Data Link'?",
-                options: [
-                    "The path a frame takes through a single switched or wireless network",
-                    "The physical copper wire connecting a PC to a wall jack",
-                    "The path a packet takes through multiple routed networks",
-                    "An encrypted tunnel between two application processes"
-                ],
-                correct: 0,
-                explanation: "A data link is the path a frame takes through a single switched or wireless network from host to router or host to host."
-            },
-            {
-                id: 35,
-                question: "What is a 'Route'?",
-                options: [
-                    "The connection between a switch and a router",
-                    "The path a packet takes all the way through an internetwork from source host to destination host",
-                    "The transmission of bits across a fiber cable",
-                    "A single frame path inside a switched LAN"
-                ],
-                correct: 1,
-                explanation: "A route is the path a packet takes all the way through the internet across multiple networks and routers."
-            },
-            {
-                id: 36,
-                question: "A packet travels from Host A to Host B through 3 switched networks connected by 2 routers. How many ROUTES exist?",
-                options: [
-                    "3 routes",
-                    "2 routes",
-                    "1 route",
-                    "6 routes"
-                ],
-                correct: 2,
-                explanation: "There is always exactly ONE route for a packet's entire journey across an internet, regardless of how many intermediate networks exist."
-            },
-            {
-                id: 37,
-                question: "A packet travels from Host A to Host B through 3 switched networks connected by 2 routers. How many DATA LINKS are involved?",
-                options: [
-                    "1 data link",
-                    "3 data links",
-                    "2 data links",
-                    "8 data links"
-                ],
-                correct: 1,
-                explanation: "There is one data link per network crossed. Passing through 3 switched networks requires 3 separate data links."
-            },
-            {
-                id: 38,
-                question: "In a routed network, frames change at:",
-                options: [
-                    "Switches, but NOT routers",
-                    "Routers, but NOT switches",
-                    "Every physical hub and cable splice",
-                    "The destination application process only"
-                ],
-                correct: 1,
-                explanation: "Frames change between routers (when moving from one network to another). Switches forward frames within a single network without changing them."
-            },
-            {
-                id: 39,
-                question: "When Host A sends a frame in Network X toward Router R1 destined for Host B in Network Z, what are the destination addresses?",
-                options: [
-                    "Packet Destination: Host B; Frame Destination: Router R1",
-                    "Packet Destination: Router R1; Frame Destination: Host B",
-                    "Packet Destination: Host A; Frame Destination: Switch X1",
-                    "Packet Destination: Host B; Frame Destination: Host B"
-                ],
-                correct: 0,
-                explanation: "The Packet destination address remains the ultimate destination host (Host B). The Frame destination address specifies the next hop router (Router R1)."
-            },
-            {
-                id: 40,
-                question: "Why does the packet destination address remain constant while frame destination addresses change across routers?",
-                options: [
-                    "The packet address specifies ultimate end-to-end destination; frame addresses specify next-hop local devices",
-                    "Routers erase IP addresses to preserve bandwidth",
-                    "Frame addresses are encrypted by layer 3",
-                    "Switches require IP addresses to forward traffic"
-                ],
-                correct: 0,
-                explanation: "The IP packet specifies the final destination host across the entire internetwork, while frame MAC addresses change at each router hop to reach local devices."
-            },
-            {
-                id: 41,
-                question: "According to the slides, an 'internet' (with a lowercase 'i') is defined as:",
-                options: [
-                    "The global public Internet",
-                    "A group of switched or wireless networks connected by routers",
-                    "A single Ethernet LAN using switches",
-                    "A set of web servers running HTTP"
-                ],
-                correct: 1,
-                explanation: "An 'internet' (lowercase i) is any collection of switched/wireless networks connected by routers so hosts on any network can communicate."
-            },
-            {
-                id: 42,
-                question: "Which layers govern single networks versus internetworks?",
-                options: [
-                    "Single Networks: L3/L4; Internetworks: L1/L2",
-                    "Single Networks: L1/L2 (Physical/Data Link); Internetworks: L3/L4 (Internet/Transport)",
-                    "Single Networks: L5; Internetworks: L1",
-                    "Single Networks: L4; Internetworks: L2"
-                ],
-                correct: 1,
-                explanation: "Single networks are governed by Physical (L1) and Data Link (L2) layers. Internetworks are governed by Internet (L3) and Transport (L4) layers."
-            },
+    // DOM Elements
+    const qTracker = document.getElementById('q-tracker');
+    const correctCountEl = document.getElementById('correct-count');
+    const incorrectCountEl = document.getElementById('incorrect-count');
+    const progressFill = document.getElementById('progress-fill');
+    const categoryTag = document.getElementById('category-tag');
+    const questionText = document.getElementById('question-text');
+    const optionsContainer = document.getElementById('options-container');
+    const explanationBox = document.getElementById('explanation-box');
+    const explanationText = document.getElementById('explanation-text');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const gridContainer = document.getElementById('grid-container');
 
-            // Topic 5: Ethernet Frame Syntax (Q43 - Q52)
-            {
-                id: 43,
-                question: "In computer science and networking, what is an 'Octet'?",
-                options: [
-                    "A group of 4 bits",
-                    "A group of 8 bits (called a byte)",
-                    "A 16-bit address block",
-                    "A 48-bit MAC address"
-                ],
-                correct: 1,
-                explanation: "An octet is a group of 8 bits, which is called a byte in computer science."
-            },
-            {
-                id: 44,
-                question: "What is the exact field length of an Ethernet MAC address?",
-                options: [
-                    "32 bits (4 octets)",
-                    "48 bits (6 octets)",
-                    "128 bits (16 octets)",
-                    "16 bits (2 octets)"
-                ],
-                correct: 1,
-                explanation: "Ethernet addresses (MAC addresses) are 48 bits (6 octets) long."
-            },
-            {
-                id: 45,
-                question: "What is the purpose of the Preamble (7 octets) and Start Frame Delimiter / SFD (1 octet) in an Ethernet frame?",
-                options: [
-                    "To store source IP addresses",
-                    "To synchronize receiver bits and alert the NIC that actual frame data is following",
-                    "To carry user payload data",
-                    "To perform error retransmission"
-                ],
-                correct: 1,
-                explanation: "The Preamble synchronizes the receiver's clock, and the SFD signals that the actual frame information is starting."
-            },
-            {
-                id: 46,
-                question: "What is the exact bit pattern of the Ethernet Start Frame Delimiter (SFD)?",
-                options: [
-                    "01010101",
-                    "10101011",
-                    "11111111",
-                    "00000000"
-                ],
-                correct: 1,
-                explanation: "The SFD consists of the specific bit pattern '10101011'."
-            },
-            {
-                id: 47,
-                question: "What is the allowed size range for user data in the Data Field of an Ethernet frame?",
-                options: [
-                    "1 to 100 bytes",
-                    "46 to 1,500 bytes (octets)",
-                    "64 to 1,518 bytes",
-                    "128 to 512 bytes"
-                ],
-                correct: 1,
-                explanation: "The Ethernet data field must contain between 46 and 1,500 bytes of payload."
-            },
-            {
-                id: 48,
-                question: "If user data is less than 46 bytes, what does the Ethernet controller do?",
-                options: [
-                    "It drops the frame immediately",
-                    "It adds padding (PAD) bytes independently until data + pad equals 46 bytes",
-                    "It delays transmission until more data arrives",
-                    "It converts the frame into a TCP segment"
-                ],
-                correct: 1,
-                explanation: "If user data is under 46 bytes, the controller adds PAD bytes to bring the total data field size up to the required 46-byte minimum."
-            },
-            {
-                id: 49,
-                question: "What is the total minimum and maximum length of an overall Ethernet frame?",
-                options: [
-                    "46 to 1,500 octets",
-                    "64 to 1,518 octets",
-                    "32 to 1,024 octets",
-                    "128 to 2,048 octets"
-                ],
-                correct: 1,
-                explanation: "Including headers and trailers, an Ethernet frame ranges from 64 octets (minimum) to 1,518 octets (maximum)."
-            },
-            {
-                id: 50,
-                question: "What is the function of the Frame Check Sequence (FCS) field in an Ethernet frame?",
-                options: [
-                    "To retransmit damaged frames",
-                    "To detect errors using a Cyclic Redundancy Check (CRC) calculation",
-                    "To specify the destination IP address",
-                    "To open a formal TCP connection"
-                ],
-                correct: 1,
-                explanation: "The FCS is a 4-octet field containing a mathematical CRC check value used by the receiver to detect bit errors."
-            },
-            {
-                id: 51,
-                question: "When a receiving host calculates an FCS value that DOES NOT match the transmitted FCS value in an Ethernet frame, the receiver:",
-                options: [
-                    "Requests immediate retransmission",
-                    "Drops (ignores) the frame completely",
-                    "Corrects the damaged bits automatically",
-                    "Forwards the corrupted frame to the application"
-                ],
-                correct: 1,
-                explanation: "Ethernet performs error detection but NOT error correction. If the FCS check fails, the receiver simply drops the frame."
-            },
-            {
-                id: 52,
-                question: "Is Ethernet a reliable or unreliable protocol, and why?",
-                options: [
-                    "Reliable, because it calculates FCS",
-                    "Unreliable, because it drops erroneous frames without retransmitting them",
-                    "Reliable, because it uses 48-bit MAC addresses",
-                    "Unreliable, because it operates at layer 5"
-                ],
-                correct: 1,
-                explanation: "Ethernet is unreliable. It detects errors via FCS and drops bad frames, but it never retransmits them."
-            },
+    function initApp() {
+      renderGridNavigator();
+      loadQuestion(currentQIndex);
+    }
 
-            // Topic 6: Transport Layer Reliability Options (TCP vs UDP) (Q53 - Q60)
-            {
-                id: 53,
-                question: "Why is error correction NOT performed on a hop-by-hop basis by intermediate switches and routers?",
-                options: [
-                    "Because switches and routers cannot read digital bits",
-                    "Because errors are rare on modern links, making hop-by-hop correction unnecessary and prohibitively expensive",
-                    "Because routers do not possess processing chips",
-                    "Because layer 3 protocols forbid error detection"
-                ],
-                correct: 1,
-                explanation: "Transmission errors on modern hops are rare. Doing error correction on every switch and router would drastically increase device costs unnecessarily."
-            },
-            {
-                id: 54,
-                question: "Why does performing error correction at the Transport Layer make economic sense?",
-                options: [
-                    "Because transport processes exist only on source and destination hosts, so correction happens only once end-to-end",
-                    "Because layer 4 hardware is cheaper than cables",
-                    "Because routers perform transport layer processing automatically",
-                    "Because layer 5 protocols perform error recovery faster"
-                ],
-                correct: 0,
-                explanation: "Transport layer processes run only on the two endpoint hosts (source and destination). Doing correction once end-to-end keeps overall cost low."
-            },
-            {
-                id: 55,
-                question: "Why can't Voice over IP (VoIP) applications use TCP at the transport layer?",
-                options: [
-                    "VoIP messages do not contain IP addresses",
-                    "VoIP cannot wait for retransmissions of lost or damaged packets due to real-time latency limits",
-                    "TCP does not support voice audio files",
-                    "VoIP runs exclusively at Layer 1"
-                ],
-                correct: 1,
-                explanation: "VoIP requires real-time delivery. Waiting for TCP to detect and retransmit lost packets causes unacceptable delays and stuttering."
-            },
-
-            {
-                id: 56,
-                question: "Which protocol is connectionless, unreliable, and places a very low burden on hosts and networks?",
-                options: [
-                    "TCP",
-                    "UDP (User Datagram Protocol)",
-                    "HTTP",
-                    "HDLC"
-                ],
-                correct: 1,
-                explanation: "UDP is the lightweight, connectionless, unreliable transport protocol designed for speed and minimal overhead."
-            },
-            {
-                id: 57,
-                question: "Which transport protocol is connection-oriented, reliable, and places a heavy burden on hosts and networks?",
-                options: [
-                    "UDP",
-                    "IP",
-                    "TCP (Transmission Control Protocol)",
-                    "Ethernet"
-                ],
-                correct: 2,
-                explanation: "TCP provides full reliability and connection management, which requires significantly higher host and network processing overhead."
-            },
-            {
-                id: 58,
-                question: "Which set of applications typical uses TCP as their transport protocol?",
-                options: [
-                    "VoIP, Live Streaming, Online Gaming",
-                    "Web Browsing (HTTP), File Transfer (FTP), Email (SMTP)",
-                    "Ethernet switching, Cable testing, Wi-Fi beaconing",
-                    "Ping, Traceroute, Router advertisements"
-                ],
-                correct: 1,
-                explanation: "HTTP, FTP, and Email require 100% accurate data delivery without missing bytes, making TCP mandatory."
-            },
-            {
-                id: 59,
-                question: "Which set of applications typical uses UDP as their transport protocol?",
-                options: [
-                    "E-Commerce transactions, Database synchronization, Web browsing",
-                    "Live Video Streaming, Online Gaming, Voice over IP (VoIP)",
-                    "File downloads, Operating system updates, Email attachments",
-                    "Domain Name System (DNS) zone transfers"
-                ],
-                correct: 1,
-                explanation: "Live video streaming, online games, and VoIP prioritize real-time speed over retransmission, making UDP ideal."
-            },
-            {
-                id: 60,
-                question: "When does DNS (Domain Name System) use UDP versus TCP?",
-                options: [
-                    "DNS uses TCP for regular queries, and UDP for zone transfers",
-                    "DNS uses UDP for quick Query/Reply messages, and TCP for heavy Zone Transfers",
-                    "DNS uses UDP exclusively for all operations",
-                    "DNS uses TCP exclusively for all operations"
-                ],
-                correct: 1,
-                explanation: "DNS uses UDP for light, fast Query/Reply transactions, but switches to TCP for large, reliable Zone Transfers between servers."
-            },
-
-            // Topic 7: Vertical/Horizontal Communication, Encapsulation & Layer Devices (Q61 - Q70)
-            {
-                id: 61,
-                question: "What is 'Encapsulation' in layered communication?",
-                options: [
-                    "Placing a higher-layer message inside the Data Field of a lower-layer message and adding a lower-layer header",
-                    "Converting analog signals into digital bits",
-                    "Stripping headers off incoming frames at the destination host",
-                    "Dividing a single router into multiple virtual switches"
-                ],
-                correct: 0,
-                explanation: "Encapsulation occurs when a lower-layer process (N-1) takes a higher-layer message (N), puts it into its data field, and prepends its own header."
-            },
-            {
-                id: 62,
-                question: "On a source host sending an HTTP request over Ethernet, what is the correct pattern of headers/trailers from LEFT to RIGHT in the final frame?",
-                options: [
-                    "[Eth Trailer] [HTTP Msg] [TCP Hdr] [IP Hdr] [Eth Hdr]",
-                    "[Eth Hdr] [IP Hdr] [TCP Hdr] [HTTP Msg] [Eth Trailer]",
-                    "[HTTP Msg] [TCP Hdr] [IP Hdr] [Eth Hdr] [Eth Trailer]",
-                    "[IP Hdr] [Eth Hdr] [TCP Hdr] [HTTP Msg] [Eth Trailer]"
-                ],
-                correct: 0,
-                explanation: "As depicted in the slides from left to right: Eth Trailer (L2), HTTP Msg (L5), TCP Hdr (L4), IP Hdr (L3), Eth Hdr (L2)."
-            },
-            {
-                id: 63,
-                question: "What happens at Layer 1 (Physical Layer) during encapsulation on the source host?",
-                options: [
-                    "Layer 1 adds a physical header and trailer to the frame",
-                    "Layer 1 converts the bits of the frame into physical signals; no encapsulation or headers occur at Layer 1",
-                    "Layer 1 checks the IP destination address for errors",
-                    "Layer 1 fragments the message into 46-byte segments"
-                ],
-                correct: 1,
-                explanation: "There are no messages or headers at Layer 1. The Physical Layer simply converts frame bits into signals for transmission."
-            },
-            {
-                id: 64,
-                question: "What is 'Decapsulation' on the destination host?",
-                options: [
-                    "The process of stripping lower-layer headers and passing inner data fields UP to higher layers",
-                    "The process of adding Ethernet trailers to IP packets",
-                    "The retransmission of lost TCP segments",
-                    "The assignment of 48-bit MAC addresses to incoming packets"
-                ],
-                correct: 0,
-                explanation: "Decapsulation is the reverse process at the receiver: stripping headers/trailers off at each layer and passing the encapsulated payload UP to the next layer."
-            },
-            {
-                id: 65,
-                question: "LAN switches are classified as 'Layer 2 Devices' because:",
-                options: [
-                    "They possess only two physical ports",
-                    "The highest layer process they execute to forward frames is Layer 2 (Data Link Layer)",
-                    "They can route packets across the global Internet",
-                    "They do not use physical cables"
-                ],
-                correct: 1,
-                explanation: "A device's 'layer' is determined by the highest layer process it uses. Switches process up to Layer 2 (Data Link) to forward frames."
-            },
-            {
-                id: 66,
-                question: "Routers are classified as 'Layer 3 Devices' because:",
-                options: [
-                    "They process up to Layer 3 (Internet Layer) to route packets across networks",
-                    "They have three antenna connectors for Wi-Fi",
-                    "They run application software like HTTP and FTP natively",
-                    "They connect exactly three host computers"
-                ],
-                correct: 0,
-                explanation: "Routers inspect Layer 3 (IP) headers to make routing decisions between networks, making them Layer 3 devices."
-            },
-            {
-                id: 67,
-                question: "How many layers of the Hybrid model must be present and active on source and destination HOST computers?",
-                options: [
-                    "Only Layer 1 and Layer 2",
-                    "Only Layer 3 and Layer 4",
-                    "All 5 Layers (Application, Transport, Internet, Data Link, Physical)",
-                    "Only Layer 5"
-                ],
-                correct: 2,
-                explanation: "Host computers execute applications and terminate connections, so they process all 5 layers of the network model."
-            },
-            {
-                id: 68,
-                question: "In supervisory protocols like ICMP (Internet Control Message Protocol), which layer INITIATES the communication?",
-                options: [
-                    "Layer 5 (Application Layer)",
-                    "Layer 4 (Transport Layer)",
-                    "Layer 3 (Internet Layer) initiates communication, so Layers 4 and 5 are NOT involved",
-                    "Layer 1 (Physical Layer)"
-                ],
-                correct: 2,
-                explanation: "ICMP is a Layer 3 supervisory protocol. Communication starts at Layer 3 on a router or host, so Layers 4 and 5 are completely bypassed."
-            },
-            {
-                id: 69,
-                question: "What is 'Horizontal Communication' in networking?",
-                options: [
-                    "Communication between adjacent layers on the same local computer",
-                    "Logical communication between peer processes running on different devices (hosts, switches, routers) using protocols",
-                    "The flow of data down a single protocol stack from L5 to L1",
-                    "The physical connection between two switches using flat cables"
-                ],
-                correct: 1,
-                explanation: "Horizontal communication is peer-to-peer logical communication across devices using standardized protocols (e.g., HTTP process to HTTP process)."
-            },
-            {
-                id: 70,
-                question: "What is 'Vertical Communication' in networking?",
-                options: [
-                    "Communication between peer application processes across the Internet",
-                    "Interaction and data passing between adjacent layer processes on the SAME host device",
-                    "Signal propagation through vertical wireless towers",
-                    "Sending emails from a mobile phone to a server"
-                ],
-                correct: 1,
-                explanation: "Vertical communication links adjacent layer processes on the same device as messages pass up or down the protocol stack."
-            }
-        ];
-
-        let userAnswers = {};
-
-        function renderQuiz() {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = '';
-
-            questions.forEach((q, index) => {
-                const qCard = document.createElement('div');
-                qCard.className = 'question-card';
-                qCard.id = `q-card-${q.id}`;
-
-                const qHeader = document.createElement('div');
-                qHeader.className = 'question-header';
-                
-                const qNum = document.createElement('span');
-                qNum.className = 'question-number';
-                qNum.innerText = `Question ${index + 1} of 70`;
-                
-                qHeader.appendChild(qNum);
-
-                const qText = document.createElement('div');
-                qText.className = 'question-text';
-                qText.innerText = q.question;
-
-                const optionsGrid = document.createElement('div');
-                optionsGrid.className = 'options-grid';
-
-                const letters = ['A', 'B', 'C', 'D'];
-
-                q.options.forEach((optText, optIndex) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'option-btn';
-                    btn.id = `q-${q.id}-opt-${optIndex}`;
-                    btn.onclick = () => selectOption(q.id, optIndex);
-
-                    const letterSpan = document.createElement('span');
-                    letterSpan.className = 'option-letter';
-                    letterSpan.innerText = letters[optIndex];
-
-                    const textSpan = document.createElement('span');
-                    textSpan.innerText = optText;
-
-                    btn.appendChild(letterSpan);
-                    btn.appendChild(textSpan);
-                    optionsGrid.appendChild(btn);
-                });
-
-                const explanationBox = document.createElement('div');
-                explanationBox.className = 'explanation-box';
-                explanationBox.id = `explanation-${q.id}`;
-
-                qCard.appendChild(qHeader);
-                qCard.appendChild(qText);
-                qCard.appendChild(optionsGrid);
-                qCard.appendChild(explanationBox);
-
-                container.appendChild(qCard);
-            });
-        }
-
-        function selectOption(questionId, selectedOptIndex) {
-            if (userAnswers[questionId] !== undefined) return; // Prevent re-answering
-
-            userAnswers[questionId] = selectedOptIndex;
-
-            const q = questions.find(item => item.id === questionId);
-            const isCorrect = selectedOptIndex === q.correct;
-
-            // Update option styles
-            for (let i = 0; i < 4; i++) {
-                const btn = document.getElementById(`q-${questionId}-opt-${i}`);
-                btn.disabled = true;
-
-                if (i === q.correct) {
-                    btn.classList.add('correct');
-                } else if (i === selectedOptIndex) {
-                    btn.classList.add('incorrect');
-                }
-            }
-
-            // Display Explanation Box
-            const expBox = document.getElementById(`explanation-${questionId}`);
-            const letters = ['A', 'B', 'C', 'D'];
-
-            if (isCorrect) {
-                expBox.className = 'explanation-box show-correct';
-                expBox.innerHTML = `
-                    <div class="explanation-title">Correct Answer! (${letters[q.correct]})</div>
-                    <div>${q.explanation}</div>
-                `;
-            } else {
-                expBox.className = 'explanation-box show-incorrect';
-                expBox.innerHTML = `
-                    <div class="explanation-title">Incorrect! You selected (${letters[selectedOptIndex]}). Correct Answer is (${letters[q.correct]})</div>
-                    <div>${q.explanation}</div>
-                `;
-            }
-
-            updateDashboard();
-        }
-
-        function updateDashboard() {
-            const totalAnswered = Object.keys(userAnswers).length;
-            let correctCount = 0;
-
-            Object.keys(userAnswers).forEach(qId => {
-                const q = questions.find(item => item.id == qId);
-                if (userAnswers[qId] === q.correct) {
-                    correctCount++;
-                }
-            });
-
-            const percentage = totalAnswered > 0 ? Math.round((correctCount / totalAnswered) * 100) : 0;
-
-            document.getElementById('score').innerText = correctCount;
-            document.getElementById('total-answered').innerText = totalAnswered;
-            document.getElementById('percentage').innerText = `${percentage}%`;
-
-            const progressPercent = (totalAnswered / questions.length) * 100;
-            document.getElementById('progress-bar').style.width = `${progressPercent}%`;
-        }
-
-        function resetExam() {
-            if (confirm("Are you sure you want to reset all answers and restart the practice lab?")) {
-                userAnswers = {};
-                renderQuiz();
-                updateDashboard();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
-        }
-
-        // Initialize quiz on load
-        window.onload = () => {
-            renderQuiz();
-            updateDashboard();
+    function renderGridNavigator() {
+      gridContainer.innerHTML = '';
+      quizData.forEach((q, idx) => {
+        const btn = document.createElement('div');
+        btn.className = 'grid-num';
+        btn.textContent = idx + 1;
+        btn.onclick = () => {
+          jumpToQuestion(idx);
+          toggleModal(false);
         };
-    </script>
+        gridContainer.appendChild(btn);
+      });
+    }
+
+    function updateGridStatus() {
+      const gridItems = gridContainer.children;
+      userAnswers.forEach((ans, idx) => {
+        if (gridItems[idx]) {
+          gridItems[idx].className = 'grid-num';
+          if (idx === currentQIndex) gridItems[idx].classList.add('current');
+          if (ans !== null) {
+            if (ans.isCorrect) gridItems[idx].classList.add('correct');
+            else gridItems[idx].classList.add('incorrect');
+          }
+        }
+      });
+    }
+
+    function loadQuestion(index) {
+      currentQIndex = index;
+      const q = quizData[index];
+
+      // Update Header & Progress
+      qTracker.textContent = `${index + 1} / ${quizData.length}`;
+      progressFill.style.width = `${((index + 1) / quizData.length) * 100}%`;
+      categoryTag.textContent = q.category;
+      questionText.textContent = `Q${index + 1}. ${q.question}`;
+
+      // Reset Options & Explanation
+      optionsContainer.innerHTML = '';
+      explanationBox.style.display = 'none';
+
+      const prefixes = ['A', 'B', 'C', 'D'];
+      const savedAnswer = userAnswers[index];
+
+      q.options.forEach((optText, optIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `
+          <span class="option-prefix">${prefixes[optIdx]}</span>
+          <span>${optText}</span>
+        `;
+
+        if (savedAnswer !== null) {
+          btn.disabled = true;
+          if (optIdx === q.answer) {
+            btn.classList.add('correct');
+          }
+          if (savedAnswer.selected === optIdx && !savedAnswer.isCorrect) {
+            btn.classList.add('incorrect');
+          }
+        } else {
+          btn.onclick = () => handleOptionClick(optIdx);
+        }
+
+        optionsContainer.appendChild(btn);
+      });
+
+      if (savedAnswer !== null) {
+        showExplanation(q.explanation);
+      }
+
+      // Update Nav Buttons
+      prevBtn.disabled = index === 0;
+      nextBtn.textContent = index === quizData.length - 1 ? 'Finish Exam' : 'Next →';
+
+      updateGridStatus();
+      updateScoreboard();
+    }
+
+    function handleOptionClick(selectedIdx) {
+      const q = quizData[currentQIndex];
+      const isCorrect = selectedIdx === q.answer;
+
+      userAnswers[currentQIndex] = { selected: selectedIdx, isCorrect: isCorrect };
+
+      // Highlight options
+      const buttons = optionsContainer.children;
+      Array.from(buttons).forEach((btn, idx) => {
+        btn.disabled = true;
+        if (idx === q.answer) btn.classList.add('correct');
+        if (idx === selectedIdx && !isCorrect) btn.classList.add('incorrect');
+      });
+
+      showExplanation(q.explanation);
+      updateScoreboard();
+      updateGridStatus();
+    }
+
+    function showExplanation(text) {
+      explanationText.textContent = text;
+      explanationBox.style.display = 'block';
+    }
+
+    function updateScoreboard() {
+      let correct = 0;
+      let incorrect = 0;
+      userAnswers.forEach(ans => {
+        if (ans !== null) {
+          if (ans.isCorrect) correct++;
+          else incorrect++;
+        }
+      });
+      correctCountEl.textContent = correct;
+      incorrectCountEl.textContent = incorrect;
+    }
+
+    function prevQuestion() {
+      if (currentQIndex > 0) loadQuestion(currentQIndex - 1);
+    }
+
+    function nextQuestion() {
+      if (currentQIndex < quizData.length - 1) {
+        loadQuestion(currentQIndex + 1);
+      } else {
+        alert(`Exam Completed!\nYour Score: ${correctCountEl.textContent} Correct out of ${quizData.length}`);
+      }
+    }
+
+    function jumpToQuestion(idx) {
+      loadQuestion(idx);
+    }
+
+    function toggleModal(show) {
+      document.getElementById('grid-modal').style.display = show ? 'flex' : 'none';
+    }
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') nextQuestion();
+      if (e.key === 'ArrowLeft') prevQuestion();
+    });
+
+    // Initialize on page load
+    window.onload = initApp;
+  </script>
 </body>
 </html>
